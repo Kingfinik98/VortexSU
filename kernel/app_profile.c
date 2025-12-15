@@ -12,6 +12,7 @@
 #include "app_profile.h"
 #include "klog.h" // IWYU pragma: keep
 #include "selinux/selinux.h"
+#include "su_mount_ns.h"
 #include "syscall_hook_manager.h"
 #include "sucompat.h"
 
@@ -147,6 +148,8 @@ void escape_with_root_profile(void)
     for_each_thread (p, t) {
         ksu_set_task_tracepoint_flag(t);
     }
+
+    setup_mount_ns(profile->namespaces);
 }
 
 void escape_to_root_for_init(void)
