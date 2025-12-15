@@ -17,6 +17,7 @@ kernelsu-objs += lsm_hooks.o
 kernelsu-objs += kernel_compat.o
 kernelsu-objs += kernel_umount.o
 kernelsu-objs += supercalls.o
+kernelsu-objs += su_mount_ns.o
 kernelsu-objs += feature.o
 kernelsu-objs += throne_tracker.o
 kernelsu-objs += ksud.o
