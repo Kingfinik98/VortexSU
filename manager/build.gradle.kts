@@ -34,7 +34,7 @@ val androidCompileNdkVersion by extra(libs.versions.ndk.get())
 val androidCmakeVersion by extra("3.22.0+")
 val androidSourceCompatibility = JavaVersion.VERSION_21
 val androidTargetCompatibility = JavaVersion.VERSION_21
-val managerVersionCode by extra(2 * 10000 + getGitCommitCount() + 700)
+val managerVersionCode by extra(30000 + getGitCommitCount() + 700)
 val managerVersionName by extra(getGitDescribe())
 
 fun getGitCommitCount(): Int {

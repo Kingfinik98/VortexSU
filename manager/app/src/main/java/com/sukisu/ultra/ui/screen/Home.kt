@@ -875,7 +875,7 @@ private fun StatusCardPreview() {
         StatusCard(
             HomeViewModel.SystemStatus(
                 isManager = true,
-                ksuVersion = 20000,
+                ksuVersion = 30000,
                 lkmMode = true,
                 kernelVersion = KernelVersion(5, 10, 101),
                 isRootAvailable = true
