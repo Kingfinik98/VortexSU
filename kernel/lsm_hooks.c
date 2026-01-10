@@ -45,14 +45,14 @@ static int ksu_task_fix_setuid(struct cred *new, const struct cred *old,
 #endif
 
 #ifdef CONFIG_KSU_MANUAL_HOOK_AUTO_INITRC_HOOK
-extern bool ksu_vfs_read_hook __read_mostly;
+extern bool ksu_init_rc_hook __read_mostly;
 
 static int ksu_file_permission(struct file *file, int mask)
 {
-    if (!ksu_vfs_read_hook)
+    if (!ksu_init_rc_hook)
         return 0;
 
-    ksu_handle_initrc(&file);
+    ksu_handle_initrc(file);
 
     return 0;
 }
