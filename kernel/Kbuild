@@ -147,3 +147,9 @@ endif
 
 ccflags-y += -Wno-strict-prototypes -Wno-int-conversion -Wno-gcc-compat -Wno-missing-prototypes
 ccflags-y += -Wno-declaration-after-statement -Wno-unused-function -Wno-unused-variable
+
+
+## deny lkm build
+ifneq ($(CONFIG_KSU), m)
+$(error This branch only support LKM build, you should use builtin branch!)
+endif
