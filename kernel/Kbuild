@@ -8,9 +8,13 @@ kernelsu-objs += sucompat.o
 kernelsu-objs += throne_tracker.o
 kernelsu-objs += pkg_observer.o
 kernelsu-objs += setuid_hook.o
+
+ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
 ifeq ($(shell test $(VERSION) -lt 6 || { test $(VERSION) -eq 6 && test $(PATCHLEVEL) -lt 8; } && echo y),y)
 kernelsu-objs += lsm_hooks.o
 endif
+endif
+
 kernelsu-objs += kernel_compat.o
 kernelsu-objs += kernel_umount.o
 kernelsu-objs += supercalls.o
