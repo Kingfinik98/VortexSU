@@ -17,14 +17,6 @@
 #endif
 #define KSU_FULL_VERSION_STRING 255
 
-struct manager_list_info {
-    int count;
-    struct {
-        uid_t uid;
-        int signature_index;
-    } managers[2];
-};
-
 void ksu_lsm_hook_init(void);
 
 extern struct cred *ksu_cred;

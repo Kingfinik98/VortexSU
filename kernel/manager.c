@@ -1,5 +1,7 @@
 #include <linux/slab.h>
 #include <linux/rculist.h>
+#include <linux/uaccess.h>
+#include "supercalls.h"
 #include "manager.h"
 #include "ksu.h"
 
@@ -155,24 +157,49 @@ bool ksu_has_manager(void)
     return !empty;
 }
 
-int ksu_get_manager_list(struct manager_list_info *info)
+int ksu_handle_get_managers_cmd(struct ksu_get_managers_cmd __user *arg,
+                                struct ksu_get_managers_cmd *cmd)
 {
     struct ksu_manager_node *pos;
-    unsigned long flags;
-    int i, count = 0;
-
-    if (!info) {
-        return -EINVAL;
-    }
+    int count = 0;
+    u16 max_allowed = cmd->count;
 
     rcu_read_lock();
     list_for_each_entry_rcu (pos, &ksu_manager_appid_list, list) {
-        info->managers[count].uid = pos->appid;
-        info->managers[count].signature_index = pos->signature_index;
+        if (count < max_allowed) {
+            struct ksu_manager_entry entry = { .uid = pos->appid,
+                                               .signature_index =
+                                                   pos->signature_index };
+
+            void __user *dest =
+                (void __user *)((char *)arg +
+                                sizeof(struct ksu_get_managers_cmd) +
+                                (count * sizeof(struct ksu_manager_entry)));
+
+            if (copy_to_user(dest, &entry, sizeof(entry))) {
+                rcu_read_unlock();
+                return -EFAULT;
+            }
+        }
         count++;
     }
     rcu_read_unlock();
 
-    info->count = count;
+    cmd->total_count = count;
     return 0;
+}
+
+int ksu_get_manager_signature_index_by_appid(u16 appid)
+{
+    struct ksu_manager_node *pos;
+
+    rcu_read_lock();
+    list_for_each_entry_rcu (pos, &ksu_manager_appid_list, list) {
+        if (pos->appid == appid) {
+            rcu_read_unlock();
+            return pos->signature_index;
+        }
+    }
+    rcu_read_unlock();
+    return -ENODATA;
 }

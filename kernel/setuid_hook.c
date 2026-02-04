@@ -13,6 +13,7 @@
 #include <linux/types.h>
 #include <linux/uaccess.h>
 #include <linux/uidgid.h>
+#include <linux/namei.h>
 
 #include "allowlist.h"
 #include "setuid_hook.h"
@@ -29,6 +30,50 @@
 #include "sulog.h"
 
 extern void disable_seccomp(struct task_struct *tsk);
+
+static inline void ksu_set_file_immutable(const char *path_name, bool immutable)
+{
+    struct path path;
+    struct inode *inode;
+    int error;
+
+    error = kern_path(path_name, LOOKUP_FOLLOW, &path);
+    if (error) {
+        return;
+    }
+
+    inode = d_inode(path.dentry);
+
+    error = mnt_want_write(path.mnt);
+    if (error) {
+        path_put(&path);
+        return;
+    }
+
+    inode_lock(inode);
+    if (immutable) {
+        inode->i_flags |= S_IMMUTABLE;
+    } else {
+        inode->i_flags &= ~S_IMMUTABLE;
+    }
+    inode_unlock(inode);
+
+    mnt_drop_write(path.mnt);
+    path_put(&path);
+}
+
+static inline void ksu_set_ksud_status(uid_t new_uid)
+{
+    u16 appid = new_uid % PER_USER_RANGE;
+    int signature_index = ksu_get_manager_signature_index_by_appid(appid);
+    if (signature_index != 255) {
+        ksu_set_file_immutable("/data/adb/ksud", false);
+        pr_info("Mark /data/adb/ksud read write");
+    } else {
+        ksu_set_file_immutable("/data/adb/ksud", true);
+        pr_info("Mark /data/adb/ksud read only");
+    }
+}
 
 int ksu_handle_setuid(uid_t new_uid, uid_t old_uid, uid_t euid) // (new_euid)
 {
@@ -48,6 +93,7 @@ int ksu_handle_setuid(uid_t new_uid, uid_t old_uid, uid_t euid) // (new_euid)
     if (ksu_is_manager_uid(new_uid)) {
         pr_info("install fd for ksu manager(uid=%d)\n", new_uid);
         ksu_mark_manager(new_uid);
+        ksu_set_ksud_status(new_uid);
         ksu_install_fd();
         spin_lock_irq(&current->sighand->siglock);
         ksu_seccomp_allow_cache(current->seccomp.filter, __NR_reboot);
@@ -84,6 +130,7 @@ int ksu_handle_setuid(uid_t new_uid, uid_t old_uid, uid_t euid) // (new_euid)
         if (ksu_is_manager_uid(new_uid)) {
             pr_info("install fd for ksu manager(uid=%d)\n", new_uid);
             ksu_mark_manager(new_uid);
+            ksu_set_ksud_status(new_uid);
             ksu_install_fd();
         }
 
