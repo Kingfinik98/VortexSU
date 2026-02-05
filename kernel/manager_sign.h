@@ -33,7 +33,7 @@
 
 // MamboSU/MamboSU
 #define EXPECTED_SIZE_MAMBO 0x384
-#define EXPECTED_SIZE_MAMBO                                                 \
+#define EXPECTED_HASH_MAMBO                                                 \
     "a9462b8b98ea1ca7901b0cbdcebfaa35f0aa95e51b01d66e6b6d2c81b97746d8"
 
 // KOWX712/KernelSU
@@ -43,7 +43,7 @@
     
 // KernelSU-Next/KernelSU-Next
 #define EXPECTED_SIZE_NEXT 0x3e6
-#define EXPECTED_SIZE_NEXT                                                 \
+#define EXPECTED_HASH_NEXT                                                 \
     "79e590113c4c4c0c222978e413a5faa801666957b1212a328e46c00c69821bf7"
     
 // KernelSU-WILD/KernelSU-WILD
@@ -51,9 +51,9 @@
 #define EXPECTED_HASH_WILD                                                     \
     "52d52d8c8bfbe53dc2b6ff1c613184e2c03013e090fe8905d8e3d5dc2658c2e4"
 
-// KernelSU-WILD/KernelSU-WILD
+// KernelSU-Next Pershoot/KernelSU-Next Pershoot
 #define EXPECTED_SIZE_0x338 0x338
-#define EXPECTED_SIZE_0x338                                                     \
+#define EXPECTED_HASH_0x338                                                     \
     "f26471a28031130362bce7eebffb9a0b8afc3095f163ce0c75a309f03b644a1f"
 
 // Dynamic Sign
