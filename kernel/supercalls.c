@@ -985,7 +985,8 @@ static int reboot_handler_pre(struct kprobe *p, struct pt_regs *regs)
     int cmd = (int)PT_REGS_PARM3(real_regs);
     void __user **arg = (void __user **)&PT_REGS_SYSCALL_PARM4(real_regs);
 
-    return ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
+    ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
+    return 0;
 }
 
 static struct kprobe reboot_kp = {
