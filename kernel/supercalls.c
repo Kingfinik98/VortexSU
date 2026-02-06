@@ -644,7 +644,7 @@ static int do_get_hook_type(void __user *arg)
 #if defined(CONFIG_KSU_MANUAL_HOOK)
     type = "Manual";
 #elif defined(CONFIG_KSU_SUSFS)
-    type = "Inline";
+    type = "Inline (SusFS)";
 #endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 13, 0)
@@ -659,13 +659,6 @@ static int do_get_hook_type(void __user *arg)
     }
 
     return 0;
-}
-// For KernelSU-Next's manager compatibility
-static int do_get_hook_mode(void __user *arg)
-{
-	int ret;
-	ret = do_get_hook_type(arg);
-	return ret;
 }
 
 // 102. ENABLE_KPM - Check if KPM is enabled
@@ -810,10 +803,6 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
       .name = "GET_HOOK_TYPE",
       .handler = do_get_hook_type,
       .perm_check = manager_or_root },
-    { .cmd = KSU_IOCTL_GET_HOOK_MODE,
-      .name = "GET_HOOK_MODE",
-      .handler = do_get_hook_mode,
-      .perm_check = manager_or_root },
     { .cmd = KSU_IOCTL_ENABLE_KPM,
       .name = "GET_ENABLE_KPM",
       .handler = do_enable_kpm,
@@ -831,6 +820,16 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
       .name = "KPM_OPERATION",
       .handler = do_kpm,
       .perm_check = manager_or_root },
+#endif
+#ifdef CONFIG_KSU_MULTI_MANAGER_SUPPORT
+    { .cmd = KSU_IOCTL_GET_HOOK_MODE,
+      .name = "GET_HOOK_MODE",
+      .handler = do_get_hook_type,
+      .perm_check = manager_or_root },
+	{ .cmd = KSU_IOCTL_GET_VERSION_TAG,
+	  .name = "GET_VERSION_TAG",
+	  .handler = do_get_full_version,
+	  .perm_check = manager_or_root },
 #endif
     { .cmd = 0, .name = NULL, .handler = NULL, .perm_check = NULL } // Sentine
 };
