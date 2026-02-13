@@ -121,6 +121,16 @@ struct ksu_enable_kpm_cmd {
     __u8 enabled; // Output: true if KPM is enabled
 };
 
+#ifdef CONFIG_KSU_MULTI_MANAGER_SUPPORT
+struct ksu_get_hook_mode_cmd {
+	char mode[16];
+};
+
+struct ksu_get_version_tag_cmd {
+	char tag[32];
+};
+#endif
+
 #define DYNAMIC_MANAGER_OP_SET 0
 #define DYNAMIC_MANAGER_OP_GET 1
 #define DYNAMIC_MANAGER_OP_WIPE 2
