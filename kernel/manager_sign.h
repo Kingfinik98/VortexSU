@@ -42,8 +42,8 @@
     "484fcba6e6c43b1fb09700633bf2fb4758f13cb0b2f4457b80d075084b26c588"
     
 // KernelSU-Next/KernelSU-Next
-#define EXPECTED_SIZE_NEXT 0x3e6
-#define EXPECTED_HASH_NEXT                                                 \
+#define EXPECTED_SIZE_KSU_NEXT 0x3e6
+#define EXPECTED_HASH_KSU_NEXT                                                 \
     "79e590113c4c4c0c222978e413a5faa801666957b1212a328e46c00c69821bf7"
     
 // KernelSU-WILD/KernelSU-WILD
@@ -55,10 +55,10 @@
 #define EXPECTED_SIZE_pershoot 0x338
 #define EXPECTED_HASH_pershoot                                                     \
     "f26471a28031130362bce7eebffb9a0b8afc3095f163ce0c75a309f03b644a1f"
-
-// VorteXSU (Custom Build)
+    
+// VorteXSU/VorteXSU
 #define EXPECTED_SIZE_VORTEXSU 0x381
-#define EXPECTED_HASH_VORTEXSU                                                 \
+#define EXPECTED_HASH_VORTEXSU                                                    \
     "67EEC44718428ADAD14E6A9DCA57822759ABA7E77A8CAD7071F6F6704DF8BB48"
 
 // Dynamic Sign
