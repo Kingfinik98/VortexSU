@@ -10,14 +10,13 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.lsplugin.apksign)
     id("kotlin-parcelize")
-
-
 }
 
 val managerVersionCode: Int by rootProject.extra
 val managerVersionName: String by rootProject.extra
 val androidCmakeVersion: String by rootProject.extra
 
+// Biarkan ini ada, tapi kita akan paksa pakai config di bawah
 apksign {
     storeFileProperty = "KEYSTORE_FILE"
     storePasswordProperty = "KEYSTORE_PASSWORD"
@@ -25,18 +24,20 @@ apksign {
     keyPasswordProperty = "KEY_PASSWORD"
 }
 
-
 android {
-
-    /**signingConfigs {
-        create("Debug") {
-            storeFile = file("D:\\other\\AndroidTool\\android_key\\keystore\\release-key.keystore")
-            storePassword = ""
-            keyAlias = ""
-            keyPassword = ""
-        }
-    }**/
     namespace = "com.resukisu.resukisu"
+
+    // === TAMBAHAN PENTING: NATIVE SIGNING CONFIG ===
+    signingConfigs {
+        create("release") {
+            // Membaca dari gradle.properties yang diisi GitHub Actions
+            storeFile = file(project.findProperty("KEYSTORE_FILE") ?: "key.jks")
+            storePassword = project.findProperty("KEYSTORE_PASSWORD") as String?
+            keyAlias = project.findProperty("KEY_ALIAS") as String?
+            keyPassword = project.findProperty("KEY_PASSWORD") as String?
+        }
+    }
+    // ===============================================
 
     buildTypes {
         release {
@@ -44,10 +45,11 @@ android {
             isShrinkResources = true
             vcsInfo.include = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // === TAMBAHAN PENTING: PAKSA PAKAI SIGNING RELEASE ===
+            signingConfig = signingConfigs.getByName("release")
+            // ====================================================
         }
-        /**debug {
-            signingConfig = signingConfigs.named("Debug").get() as ApkSigningConfig
-        }**/
     }
 
     buildFeatures {
@@ -62,12 +64,8 @@ android {
             useLegacyPackaging = true
         }
         resources {
-            // https://stackoverflow.com/a/58956288
-            // It will break Layout Inspector, but it's unused for release build.
             excludes += "META-INF/*.version"
-            // https://github.com/Kotlin/kotlinx.coroutines?tab=readme-ov-file#avoiding-including-the-debug-infrastructure-in-the-resulting-apk
             excludes += "DebugProbesKt.bin"
-            // https://issueantenna.com/repo/kotlin/kotlinx.coroutines/issues/3158
             excludes += "kotlin-tooling-metadata.json"
         }
     }
@@ -91,7 +89,6 @@ android {
         }
     }
 
-    // https://stackoverflow.com/a/77745844
     tasks.withType<PackageAndroidArtifact> {
         doFirst { appMetadata.asFile.orNull?.writeText("") }
     }
@@ -164,5 +161,4 @@ dependencies {
     implementation(libs.mmrl.ui)
 
     implementation(libs.accompanist.drawablepainter)
-
 }
