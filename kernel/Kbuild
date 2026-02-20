@@ -375,9 +375,11 @@ endif
 
 ifneq ($(KERNEL_TYPE), GKI 2.0)
     ifeq ($(KSU_TP_HOOK), y)
-        $(info -- Error: $(REPO_NAME) TP Hooks are only supported on GKI 2.0 kernels.)
+        $(info -- $(REPO_NAME) TP Hooks are only supported on GKI 2.0 kernels.)
         $(info -- Current Kernel Type: $(KERNEL_TYPE))
         $(info -- If you really want continue, goto Kbuild and comment out this warning.)
+        $(info -- Mostly, this error is because you forget enable some kernel configuration.)
+        $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
         $(error TP hooks are incompatible with Non-GKI/GKI 1.0 kernels in this configuration.)
     endif
 endif
