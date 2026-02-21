@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
@@ -38,18 +38,18 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileTemplateScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.TemplateEditorScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.SwitchItem
-import com.resukisu.resukisu.ui.component.profile.AppProfileConfig
-import com.resukisu.resukisu.ui.component.profile.RootProfileConfig
-import com.resukisu.resukisu.ui.component.profile.TemplateConfig
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.theme.getCardColors
-import com.resukisu.resukisu.ui.theme.getCardElevation
-import com.resukisu.resukisu.ui.util.*
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
-import com.resukisu.resukisu.ui.viewmodel.getTemplateInfoById
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.SwitchItem
+import com.vortexsu.vortexsu.ui.component.profile.AppProfileConfig
+import com.vortexsu.vortexsu.ui.component.profile.RootProfileConfig
+import com.vortexsu.vortexsu.ui.component.profile.TemplateConfig
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.theme.getCardColors
+import com.vortexsu.vortexsu.ui.theme.getCardElevation
+import com.vortexsu.vortexsu.ui.util.*
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.ui.viewmodel.getTemplateInfoById
 import kotlinx.coroutines.launch
 
 /**

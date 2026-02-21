@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 import android.annotation.SuppressLint
 import android.app.DownloadManager
@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.resukisu.resukisu.ui.util.module.LatestVersionInfo
+import com.vortexsu.vortexsu.ui.util.module.LatestVersionInfo
 import java.io.File
 import java.util.concurrent.TimeUnit
 

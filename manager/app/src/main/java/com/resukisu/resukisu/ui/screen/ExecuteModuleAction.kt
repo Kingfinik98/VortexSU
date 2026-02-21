@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.os.Environment
 import androidx.activity.compose.BackHandler
@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.KeyEventBlocker
-import com.resukisu.resukisu.ui.util.LocalSnackbarHost
-import com.resukisu.resukisu.ui.util.runModuleAction
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.KeyEventBlocker
+import com.vortexsu.vortexsu.ui.util.LocalSnackbarHost
+import com.vortexsu.vortexsu.ui.util.runModuleAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

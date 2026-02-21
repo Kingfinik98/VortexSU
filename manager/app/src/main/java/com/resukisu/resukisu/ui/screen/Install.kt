@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.app.Activity
 import android.content.Context
@@ -49,18 +49,18 @@ import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestin
 import com.ramcosta.composedestinations.generated.destinations.KernelFlashScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.getKernelVersion
-import com.resukisu.resukisu.ui.component.DialogHandle
-import com.resukisu.resukisu.ui.component.SuperDropdown
-import com.resukisu.resukisu.ui.component.rememberConfirmDialog
-import com.resukisu.resukisu.ui.component.rememberCustomDialog
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.theme.CardConfig.cardAlpha
-import com.resukisu.resukisu.ui.theme.CardConfig.cardElevation
-import com.resukisu.resukisu.ui.theme.getCardColors
-import com.resukisu.resukisu.ui.theme.getCardElevation
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.getKernelVersion
+import com.vortexsu.vortexsu.ui.component.DialogHandle
+import com.vortexsu.vortexsu.ui.component.SuperDropdown
+import com.vortexsu.vortexsu.ui.component.rememberConfirmDialog
+import com.vortexsu.vortexsu.ui.component.rememberCustomDialog
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.theme.CardConfig.cardAlpha
+import com.vortexsu.vortexsu.ui.theme.CardConfig.cardElevation
+import com.vortexsu.vortexsu.ui.theme.getCardColors
+import com.vortexsu.vortexsu.ui.theme.getCardElevation
+import com.vortexsu.vortexsu.ui.util.*
 import zako.zako.zako.zakoui.screen.kernelFlash.component.SlotSelectionDialog
 
 /**

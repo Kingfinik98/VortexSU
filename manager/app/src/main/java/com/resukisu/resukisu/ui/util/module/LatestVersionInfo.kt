@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util.module
+package com.vortexsu.vortexsu.ui.util.module
 
 data class LatestVersionInfo(
     val versionCode : Int = 0,

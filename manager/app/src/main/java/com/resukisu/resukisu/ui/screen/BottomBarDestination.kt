@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -7,7 +7,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.generated.destinations.*
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.R
 
 enum class BottomBarDestination(
     val direction: DirectionDestinationSpec,

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.susfs
+package com.vortexsu.vortexsu.ui.susfs
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.sp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.susfs.component.*
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.susfs.util.SuSFSManager
-import com.resukisu.resukisu.ui.susfs.util.SuSFSManager.isSusVersion158
-import com.resukisu.resukisu.ui.susfs.util.SuSFSManager.isSusVersion159
-import com.resukisu.resukisu.ui.susfs.util.SuSFSManager.isSusVersion1512
-import com.resukisu.resukisu.ui.util.getSuSFSVersion
-import com.resukisu.resukisu.ui.util.isAbDevice
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.susfs.component.*
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.susfs.util.SuSFSManager
+import com.vortexsu.vortexsu.ui.susfs.util.SuSFSManager.isSusVersion158
+import com.vortexsu.vortexsu.ui.susfs.util.SuSFSManager.isSusVersion159
+import com.vortexsu.vortexsu.ui.susfs.util.SuSFSManager.isSusVersion1512
+import com.vortexsu.vortexsu.ui.util.getSuSFSVersion
+import com.vortexsu.vortexsu.ui.util.isAbDevice
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat

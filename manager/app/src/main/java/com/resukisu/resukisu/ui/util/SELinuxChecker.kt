@@ -1,7 +1,7 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 import android.content.Context
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.R
 import com.topjohnwu.superuser.io.SuFile
 
 fun getSELinuxStatus(context: Context) = SuFile("/sys/fs/selinux/enforce").run {

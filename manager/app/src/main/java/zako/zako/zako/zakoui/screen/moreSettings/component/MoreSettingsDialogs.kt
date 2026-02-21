@@ -30,18 +30,18 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.list.ListDialog
 import com.maxkeppeler.sheets.list.models.ListOption
 import com.maxkeppeler.sheets.list.models.ListSelection
-import com.resukisu.resukisu.Natives
+import com.vortexsu.vortexsu.Natives
 import zako.zako.zako.zakoui.screen.moreSettings.util.LocaleHelper
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.ConfirmResult
-import com.resukisu.resukisu.ui.component.rememberConfirmDialog
-import com.resukisu.resukisu.ui.screen.SwitchItem
-import com.resukisu.resukisu.ui.theme.*
-import com.resukisu.resukisu.ui.util.cleanRuntimeEnvironment
-import com.resukisu.resukisu.ui.util.getUidMultiUserScan
-import com.resukisu.resukisu.ui.util.readUidScannerFile
-import com.resukisu.resukisu.ui.util.setUidAutoScan
-import com.resukisu.resukisu.ui.util.setUidMultiUserScan
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.ConfirmResult
+import com.vortexsu.vortexsu.ui.component.rememberConfirmDialog
+import com.vortexsu.vortexsu.ui.screen.SwitchItem
+import com.vortexsu.vortexsu.ui.theme.*
+import com.vortexsu.vortexsu.ui.util.cleanRuntimeEnvironment
+import com.vortexsu.vortexsu.ui.util.getUidMultiUserScan
+import com.vortexsu.vortexsu.ui.util.readUidScannerFile
+import com.vortexsu.vortexsu.ui.util.setUidAutoScan
+import com.vortexsu.vortexsu.ui.util.setUidMultiUserScan
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -585,7 +585,7 @@ fun UidScannerSection(
         exit = fadeOut() + shrinkVertically()
     ) {
         val confirmDialog = rememberConfirmDialog()
-        com.resukisu.resukisu.ui.screen.SettingItem(
+        com.vortexsu.vortexsu.ui.screen.SettingItem(
             icon = Icons.Filled.CleaningServices,
             title = stringResource(R.string.clean_runtime_environment),
             summary = stringResource(R.string.clean_runtime_environment_summary),

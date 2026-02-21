@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
@@ -64,15 +64,15 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.FabMenuPresets
-import com.resukisu.resukisu.ui.component.SearchAppBar
-import com.resukisu.resukisu.ui.component.VerticalExpandableFab
-import com.resukisu.resukisu.ui.util.module.ModuleModify
-import com.resukisu.resukisu.ui.viewmodel.AppCategory
-import com.resukisu.resukisu.ui.viewmodel.SortType
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.FabMenuPresets
+import com.vortexsu.vortexsu.ui.component.SearchAppBar
+import com.vortexsu.vortexsu.ui.component.VerticalExpandableFab
+import com.vortexsu.vortexsu.ui.util.module.ModuleModify
+import com.vortexsu.vortexsu.ui.viewmodel.AppCategory
+import com.vortexsu.vortexsu.ui.viewmodel.SortType
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

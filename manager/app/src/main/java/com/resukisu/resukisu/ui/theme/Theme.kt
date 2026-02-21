@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.theme
+package com.vortexsu.vortexsu.ui.theme
 
 import android.content.Context
 import android.net.Uri
@@ -30,8 +30,8 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.resukisu.resukisu.ui.theme.util.BackgroundTransformation
-import com.resukisu.resukisu.ui.theme.util.saveTransformedBackground
+import com.vortexsu.vortexsu.ui.theme.util.BackgroundTransformation
+import com.vortexsu.vortexsu.ui.theme.util.saveTransformedBackground
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import java.io.File

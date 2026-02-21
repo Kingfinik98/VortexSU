@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.network
+package com.vortexsu.vortexsu.network
 
 import android.content.Context
 import android.util.Log
@@ -257,7 +257,7 @@ class RemoteToolsDownloader(
     ): DownloadResult = withContext(Dispatchers.IO) {
 
         try {
-            com.resukisu.resukisu.utils.AssetsUtil.exportFiles(context, fileName, targetFile.absolutePath)
+            com.vortexsu.vortexsu.utils.AssetsUtil.exportFiles(context, fileName, targetFile.absolutePath)
 
             if (!targetFile.exists()) {
                 val errorMsg = "Local $fileName file extraction failed"

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.activity.component
+package com.vortexsu.vortexsu.ui.activity.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -14,14 +14,14 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.spec.RouteOrDirection
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ui.MainActivity
-import com.resukisu.resukisu.ui.activity.util.*
-import com.resukisu.resukisu.ui.activity.util.AppData.getKpmVersionUse
-import com.resukisu.resukisu.ui.screen.BottomBarDestination
-import com.resukisu.resukisu.ui.theme.CardConfig.cardAlpha
-import com.resukisu.resukisu.ui.theme.CardConfig.cardElevation
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ui.MainActivity
+import com.vortexsu.vortexsu.ui.activity.util.*
+import com.vortexsu.vortexsu.ui.activity.util.AppData.getKpmVersionUse
+import com.vortexsu.vortexsu.ui.screen.BottomBarDestination
+import com.vortexsu.vortexsu.ui.theme.CardConfig.cardAlpha
+import com.vortexsu.vortexsu.ui.theme.CardConfig.cardElevation
+import com.vortexsu.vortexsu.ui.util.*
 
 @SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)

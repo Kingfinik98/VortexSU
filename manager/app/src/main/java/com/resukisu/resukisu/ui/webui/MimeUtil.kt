@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.resukisu.resukisu.ui.webui
+package com.vortexsu.vortexsu.ui.webui
 
 import java.net.URLConnection
 

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 /*
  * Copyright (C) 2009 The Android Open Source Project

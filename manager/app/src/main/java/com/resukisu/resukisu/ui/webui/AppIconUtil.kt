@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.webui
+package com.vortexsu.vortexsu.ui.webui
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable
 import android.util.LruCache
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.scale
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel.Companion.getAppIconDrawable
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel.Companion.getAppIconDrawable
 
 object AppIconUtil {
     // Limit cache size to 200 icons

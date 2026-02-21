@@ -255,7 +255,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       ifeq ($(shell test $(PATCHLEVEL) -ge 8 && echo y),y)
         $(info -- You can't use LSM hooks for kernel version higher than 6.8)
         $(info -- You should turn off CONFIG_KSU_MANUAL_HOOK_AUTO_SETUID_HOOK and manually setresuid hook)
-        $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+        $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
         $(error You can't use LSM hooks when kernel version >= 6.8)
       endif
     endif
@@ -266,7 +266,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       $(info -- $(REPO_NAME)/manual_hook: ksu_handle_setresuid found)
     else
       $(info -- You lost ksu_handle_setresuid hook in your kernel)
-      $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+      $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
       $(error You should integrate $(REPO_NAME) in your kernel.)
     endif
   endif
@@ -277,7 +277,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       ifeq ($(shell test $(PATCHLEVEL) -ge 8 && echo y),y)
         $(info -- You can't use LSM hooks for kernel version higher than 6.8)
         $(info -- You should turn off CONFIG_KSU_MANUAL_HOOK_AUTO_INITRC_HOOK and manually sys_read hook)
-        $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+        $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
         $(error You can't use LSM hooks when kernel version >= 6.8)
       endif
     endif
@@ -288,14 +288,14 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       $(info -- $(REPO_NAME)/manual_hook: ksu_handle_sys_read found)
     else
       $(info -- You lost ksu_handle_sys_read hook in your kernel)
-      $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+      $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
       $(error You should integrate $(REPO_NAME) in your kernel.)
     endif
   endif
 
   ifeq ($(shell grep -q "ksu_vfs_read_hook" $(srctree)/fs/read_write.c; echo $$?),0)
     $(info -- ksu_vfs_read_hook is incompatible hook)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel correctly.)
   endif
 
@@ -306,7 +306,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       $(info -- $(REPO_NAME)/manual_hook: ksu_handle_input_handle_event found)
     else
       $(info -- You lost ksu_handle_input_handle_event hook in your kernel)
-      $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+      $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
       $(error You should integrate $(REPO_NAME) in your kernel.)
     endif
   endif
@@ -315,7 +315,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_execveat found)
   else
     $(info -- You lost ksu_handle_execveat hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif
 
@@ -323,7 +323,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_faccessat found)
   else
     $(info -- You lost ksu_handle_faccessat hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif
 
@@ -331,7 +331,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_stat found)
   else
     $(info -- You lost ksu_handle_stat hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif
 
@@ -339,7 +339,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_newfstat_ret found)
   else
     $(info -- You lost ksu_handle_newfstat_ret hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif 
 
@@ -347,7 +347,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_fstat64_ret found)
   else
     $(info -- You lost ksu_handle_fstat64_ret hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif
 
@@ -355,7 +355,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
     $(info -- $(REPO_NAME)/manual_hook: ksu_handle_sys_reboot found)
   else
     $(info -- You lost ksu_handle_sys_reboot hook in your kernel)
-    $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+    $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
     $(error You should integrate $(REPO_NAME) in your kernel.)
   endif
 
@@ -364,7 +364,7 @@ ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
       $(info -- $(REPO_NAME)/manual_hook: is_ksu_transition found)
     else
       $(info -- You lost is_ksu_transition hook in your kernel)
-      $(info -- Read: https://resukisu.github.io/guide/manual-integrate.html)
+      $(info -- Read: https://vortexsu.github.io/guide/manual-integrate.html)
       $(error You should integrate $(REPO_NAME) in your kernel.)
     endif
   endif

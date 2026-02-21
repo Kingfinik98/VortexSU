@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.viewmodel
+package com.vortexsu.vortexsu.ui.viewmodel
 
 import android.content.Context
 import android.os.SystemClock
@@ -13,10 +13,10 @@ import com.dergoogler.mmrl.platform.model.ModuleConfig
 import com.dergoogler.mmrl.platform.model.ModuleConfig.Companion.asModuleConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.resukisu.resukisu.ui.util.HanziToPinyin
-import com.resukisu.resukisu.ui.util.listModules
-import com.resukisu.resukisu.ui.util.getRootShell
-import com.resukisu.resukisu.ui.util.module.ModuleVerificationManager
+import com.vortexsu.vortexsu.ui.util.HanziToPinyin
+import com.vortexsu.vortexsu.ui.util.listModules
+import com.vortexsu.vortexsu.ui.util.getRootShell
+import com.vortexsu.vortexsu.ui.util.module.ModuleVerificationManager
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject

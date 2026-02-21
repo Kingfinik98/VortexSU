@@ -1,11 +1,11 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 import android.content.Context
 import android.os.Build
 import android.system.Os
 import com.topjohnwu.superuser.ShellUtils
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ui.screen.getManagerVersion
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ui.screen.getManagerVersion
 import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter

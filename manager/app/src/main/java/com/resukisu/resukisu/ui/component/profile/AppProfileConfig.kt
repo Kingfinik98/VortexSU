@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component.profile
+package com.vortexsu.vortexsu.ui.component.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.OutlinedTextField
@@ -7,9 +7,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.SwitchItem
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.SwitchItem
 
 @Composable
 fun AppProfileConfig(

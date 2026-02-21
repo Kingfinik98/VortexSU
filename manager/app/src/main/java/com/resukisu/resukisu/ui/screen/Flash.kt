@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.content.Context
 import android.content.Intent
@@ -41,11 +41,11 @@ import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestin
 import com.ramcosta.composedestinations.generated.destinations.ModuleScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.KeyEventBlocker
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.util.*
-import com.resukisu.resukisu.ui.viewmodel.ModuleViewModel
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.KeyEventBlocker
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.util.*
+import com.vortexsu.vortexsu.ui.viewmodel.ModuleViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,9 +54,9 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.content.edit
-import com.resukisu.resukisu.ui.component.rememberCustomDialog
-import com.resukisu.resukisu.ui.util.module.ModuleOperationUtils
-import com.resukisu.resukisu.ui.util.module.ModuleUtils
+import com.vortexsu.vortexsu.ui.component.rememberCustomDialog
+import com.vortexsu.vortexsu.ui.util.module.ModuleOperationUtils
+import com.vortexsu.vortexsu.ui.util.module.ModuleUtils
 import com.topjohnwu.superuser.io.SuFile
 
 /**

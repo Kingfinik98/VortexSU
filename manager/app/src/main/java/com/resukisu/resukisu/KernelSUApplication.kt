@@ -1,4 +1,4 @@
-package com.resukisu.resukisu
+package com.vortexsu.vortexsu
 
 import android.app.Application
 import android.system.Os
@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
 import coil.Coil
 import coil.ImageLoader
 import com.dergoogler.mmrl.platform.Platform

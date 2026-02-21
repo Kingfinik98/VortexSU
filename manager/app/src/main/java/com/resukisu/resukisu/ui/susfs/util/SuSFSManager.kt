@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.susfs.util
+package com.vortexsu.vortexsu.ui.susfs.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import com.dergoogler.mmrl.platform.Platform.Companion.context
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.R
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,10 +19,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import androidx.core.content.edit
-import com.resukisu.resukisu.ui.util.getRootShell
-import com.resukisu.resukisu.ui.util.getSuSFSVersion
-import com.resukisu.resukisu.ui.util.getSuSFSFeatures
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.ui.util.getRootShell
+import com.vortexsu.vortexsu.ui.util.getSuSFSVersion
+import com.vortexsu.vortexsu.ui.util.getSuSFSFeatures
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
 import com.topjohnwu.superuser.io.SuFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

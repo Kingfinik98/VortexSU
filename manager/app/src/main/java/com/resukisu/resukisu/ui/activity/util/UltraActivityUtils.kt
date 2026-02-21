@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.activity.util
+package com.vortexsu.vortexsu.ui.activity.util
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
@@ -8,9 +8,9 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ui.MainActivity
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ui.MainActivity
+import com.vortexsu.vortexsu.ui.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +22,12 @@ import java.util.*
 import android.net.Uri
 import androidx.lifecycle.lifecycleScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.ui.component.ZipFileDetector
-import com.resukisu.resukisu.ui.component.ZipFileInfo
-import com.resukisu.resukisu.ui.component.ZipType
+import com.vortexsu.vortexsu.ui.component.ZipFileDetector
+import com.vortexsu.vortexsu.ui.component.ZipFileInfo
+import com.vortexsu.vortexsu.ui.component.ZipType
 import com.ramcosta.composedestinations.generated.destinations.FlashScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
-import com.resukisu.resukisu.ui.screen.FlashIt
+import com.vortexsu.vortexsu.ui.screen.FlashIt
 import kotlinx.coroutines.withContext
 import androidx.core.content.edit
 

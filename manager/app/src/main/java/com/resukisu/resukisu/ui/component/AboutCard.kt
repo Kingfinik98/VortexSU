@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component
+package com.vortexsu.vortexsu.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.resukisu.resukisu.BuildConfig
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.BuildConfig
+import com.vortexsu.vortexsu.R
 
 @Preview
 @Composable

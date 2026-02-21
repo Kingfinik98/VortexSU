@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.content.Context
 import android.content.Intent
@@ -45,15 +45,15 @@ import com.ramcosta.composedestinations.generated.destinations.LogViewerScreenDe
 import com.ramcosta.composedestinations.generated.destinations.UmountManagerScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.MoreSettingsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.resukisu.resukisu.BuildConfig
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.*
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.theme.CardConfig.cardAlpha
-import com.resukisu.resukisu.ui.theme.getCardColors
-import com.resukisu.resukisu.ui.theme.getCardElevation
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.BuildConfig
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.*
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.theme.CardConfig.cardAlpha
+import com.vortexsu.vortexsu.ui.theme.getCardColors
+import com.vortexsu.vortexsu.ui.theme.getCardElevation
+import com.vortexsu.vortexsu.ui.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

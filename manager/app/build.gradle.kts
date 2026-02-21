@@ -36,7 +36,7 @@ android {
             keyPassword = ""
         }
     }**/
-    namespace = "com.resukisu.resukisu"
+    namespace = "com.vortexsu.vortexsu"
 
     buildTypes {
         release {

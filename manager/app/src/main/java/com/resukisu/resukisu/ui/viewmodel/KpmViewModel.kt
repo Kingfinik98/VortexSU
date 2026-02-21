@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.viewmodel
+package com.vortexsu.vortexsu.ui.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.ui.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

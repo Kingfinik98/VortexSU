@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -35,9 +35,9 @@ import com.ramcosta.composedestinations.generated.destinations.TemplateEditorScr
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.result.getOr
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.viewmodel.TemplateViewModel
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.viewmodel.TemplateViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

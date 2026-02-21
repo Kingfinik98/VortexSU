@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component
+package com.vortexsu.vortexsu.ui.component
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.resukisu.resukisu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.theme.CardConfig
 
 private const val TAG = "SearchBar"
 

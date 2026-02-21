@@ -1,4 +1,4 @@
-package com.resukisu.resukisu
+package com.vortexsu.vortexsu
 
 import android.os.Parcelable
 import androidx.annotation.Keep

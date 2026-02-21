@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui
+package com.vortexsu.vortexsu.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.content.pm.PackageInfo
 import android.os.*
 import android.util.Log
 import com.topjohnwu.superuser.ipc.RootService
-import com.resukisu.zako.IKsuInterface
+import com.vortexsu.zako.IKsuInterface
 
 /**
  * @author ShirkNeko

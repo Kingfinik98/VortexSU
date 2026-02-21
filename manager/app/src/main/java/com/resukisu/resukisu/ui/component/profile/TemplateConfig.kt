@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component.profile
+package com.vortexsu.vortexsu.ui.component.profile
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -11,11 +11,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.util.listAppProfileTemplates
-import com.resukisu.resukisu.ui.util.setSepolicy
-import com.resukisu.resukisu.ui.viewmodel.getTemplateInfoById
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.util.listAppProfileTemplates
+import com.vortexsu.vortexsu.ui.util.setSepolicy
+import com.vortexsu.vortexsu.ui.viewmodel.getTemplateInfoById
 
 /**
  * @author weishu

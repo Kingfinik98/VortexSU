@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -27,14 +27,14 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.result.ResultBackNavigator
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.component.profile.RootProfileConfig
-import com.resukisu.resukisu.ui.util.deleteAppProfileTemplate
-import com.resukisu.resukisu.ui.util.getAppProfileTemplate
-import com.resukisu.resukisu.ui.util.setAppProfileTemplate
-import com.resukisu.resukisu.ui.viewmodel.TemplateViewModel
-import com.resukisu.resukisu.ui.viewmodel.toJSON
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.component.profile.RootProfileConfig
+import com.vortexsu.vortexsu.ui.util.deleteAppProfileTemplate
+import com.vortexsu.vortexsu.ui.util.getAppProfileTemplate
+import com.vortexsu.vortexsu.ui.util.setAppProfileTemplate
+import com.vortexsu.vortexsu.ui.viewmodel.TemplateViewModel
+import com.vortexsu.vortexsu.ui.viewmodel.toJSON
 
 /**
  * @author weishu

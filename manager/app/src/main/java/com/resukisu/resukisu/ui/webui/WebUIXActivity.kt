@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.webui
+package com.vortexsu.vortexsu.ui.webui
 
 import android.app.ActivityManager
 import android.os.Build
@@ -16,8 +16,8 @@ import com.dergoogler.mmrl.ui.component.Loading
 import com.dergoogler.mmrl.webui.model.WebUIConfig
 import com.dergoogler.mmrl.webui.screen.WebUIScreen
 import com.dergoogler.mmrl.webui.util.rememberWebUIOptions
-import com.resukisu.resukisu.BuildConfig
-import com.resukisu.resukisu.ui.theme.KernelSUTheme
+import com.vortexsu.vortexsu.BuildConfig
+import com.vortexsu.vortexsu.ui.theme.KernelSUTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

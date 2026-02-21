@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.susfs.util
+package com.vortexsu.vortexsu.ui.susfs.util
 
 import android.annotation.SuppressLint
 

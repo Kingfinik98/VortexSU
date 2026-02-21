@@ -1,10 +1,10 @@
-package com.resukisu.resukisu.ui.util.module
+package com.vortexsu.vortexsu.ui.util.module
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.R
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

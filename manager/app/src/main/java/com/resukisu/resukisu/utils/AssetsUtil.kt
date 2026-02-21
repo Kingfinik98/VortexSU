@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.utils
+package com.vortexsu.vortexsu.utils
 
 import android.content.Context
 import java.io.File

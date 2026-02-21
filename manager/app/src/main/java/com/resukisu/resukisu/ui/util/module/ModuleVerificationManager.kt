@@ -1,10 +1,10 @@
-package com.resukisu.resukisu.ui.util.module
+package com.vortexsu.vortexsu.ui.util.module
 
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ui.util.getRootShell
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ui.util.getRootShell
 import java.io.File
 import java.io.FileOutputStream
 

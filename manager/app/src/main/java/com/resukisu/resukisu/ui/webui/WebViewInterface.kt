@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.webui
+package com.vortexsu.vortexsu.ui.webui
 
 import android.app.Activity
 import android.content.pm.ApplicationInfo
@@ -14,8 +14,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.dergoogler.mmrl.webui.interfaces.WXInterface
 import com.dergoogler.mmrl.webui.interfaces.WXOptions
 import com.dergoogler.mmrl.webui.model.JavaScriptInterface
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.ui.util.*
 import com.topjohnwu.superuser.CallbackList
 import com.topjohnwu.superuser.ShellUtils
 import com.topjohnwu.superuser.internal.UiThreadHandler

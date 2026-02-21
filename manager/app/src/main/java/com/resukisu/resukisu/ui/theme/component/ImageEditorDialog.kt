@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.theme.component
+package com.vortexsu.vortexsu.ui.theme.component
 
 import android.net.Uri
 import androidx.compose.animation.core.*
@@ -30,9 +30,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.theme.util.BackgroundTransformation
-import com.resukisu.resukisu.ui.theme.util.saveTransformedBackground
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.theme.util.BackgroundTransformation
+import com.vortexsu.vortexsu.ui.theme.util.saveTransformedBackground
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.max

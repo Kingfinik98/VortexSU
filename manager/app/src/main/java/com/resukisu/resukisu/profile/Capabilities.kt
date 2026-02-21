@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.profile
+package com.vortexsu.vortexsu.profile
 
 /**
  * @author weishu

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.webui
+package com.vortexsu.vortexsu.ui.webui
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
@@ -23,8 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewAssetLoader
 import com.dergoogler.mmrl.platform.model.ModId
 import com.dergoogler.mmrl.webui.interfaces.WXOptions
-import com.resukisu.resukisu.ui.util.createRootShell
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.ui.util.createRootShell
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component
+package com.vortexsu.vortexsu.ui.component
 
 import android.graphics.text.LineBreaker
 import android.os.Build

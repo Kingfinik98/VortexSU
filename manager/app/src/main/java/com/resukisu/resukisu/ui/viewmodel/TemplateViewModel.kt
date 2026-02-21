@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.viewmodel
+package com.vortexsu.vortexsu.ui.viewmodel
 
 import android.os.Parcelable
 import android.util.Log
@@ -7,12 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.profile.Capabilities
-import com.resukisu.resukisu.profile.Groups
-import com.resukisu.resukisu.ui.util.getAppProfileTemplate
-import com.resukisu.resukisu.ui.util.listAppProfileTemplates
-import com.resukisu.resukisu.ui.util.setAppProfileTemplate
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.profile.Capabilities
+import com.vortexsu.vortexsu.profile.Groups
+import com.vortexsu.vortexsu.ui.util.getAppProfileTemplate
+import com.vortexsu.vortexsu.ui.util.listAppProfileTemplates
+import com.vortexsu.vortexsu.ui.util.setAppProfileTemplate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component.profile
+package com.vortexsu.vortexsu.ui.component.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,12 +21,12 @@ import com.maxkeppeler.sheets.input.models.*
 import com.maxkeppeler.sheets.list.ListDialog
 import com.maxkeppeler.sheets.list.models.ListOption
 import com.maxkeppeler.sheets.list.models.ListSelection
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.profile.Capabilities
-import com.resukisu.resukisu.profile.Groups
-import com.resukisu.resukisu.ui.component.rememberCustomDialog
-import com.resukisu.resukisu.ui.util.isSepolicyValid
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.profile.Capabilities
+import com.vortexsu.vortexsu.profile.Groups
+import com.vortexsu.vortexsu.ui.component.rememberCustomDialog
+import com.vortexsu.vortexsu.ui.util.isSepolicyValid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

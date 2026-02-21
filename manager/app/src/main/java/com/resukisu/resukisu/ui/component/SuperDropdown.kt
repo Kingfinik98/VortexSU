@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.component
+package com.vortexsu.vortexsu.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

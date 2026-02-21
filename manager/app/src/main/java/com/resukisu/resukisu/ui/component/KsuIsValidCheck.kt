@@ -1,8 +1,8 @@
-package com.resukisu.resukisu.ui.component
+package com.vortexsu.vortexsu.ui.component
 
 import androidx.compose.runtime.Composable
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ksuApp
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ksuApp
 
 @Composable
 fun KsuIsValid(

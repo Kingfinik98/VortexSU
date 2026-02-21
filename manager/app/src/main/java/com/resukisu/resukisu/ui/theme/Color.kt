@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.theme
+package com.vortexsu.vortexsu.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

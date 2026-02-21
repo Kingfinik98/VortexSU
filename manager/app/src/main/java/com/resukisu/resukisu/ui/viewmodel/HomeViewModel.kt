@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.viewmodel
+package com.vortexsu.vortexsu.ui.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,12 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.resukisu.resukisu.KernelVersion
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.getKernelVersion
-import com.resukisu.resukisu.ksuApp
-import com.resukisu.resukisu.ui.util.*
-import com.resukisu.resukisu.ui.util.module.LatestVersionInfo
+import com.vortexsu.vortexsu.KernelVersion
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.getKernelVersion
+import com.vortexsu.vortexsu.ksuApp
+import com.vortexsu.vortexsu.ui.util.*
+import com.vortexsu.vortexsu.ui.util.module.LatestVersionInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

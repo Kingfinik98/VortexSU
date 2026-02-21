@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util
+package com.vortexsu.vortexsu.ui.util
 
 import android.content.ContentResolver
 import android.content.Context
@@ -16,9 +16,9 @@ import com.topjohnwu.superuser.ShellUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import com.resukisu.resukisu.BuildConfig
-import com.resukisu.resukisu.Natives
-import com.resukisu.resukisu.ksuApp
+import com.vortexsu.vortexsu.BuildConfig
+import com.vortexsu.vortexsu.Natives
+import com.vortexsu.vortexsu.ksuApp
 import com.topjohnwu.superuser.io.SuFile
 import org.json.JSONArray
 import java.io.File

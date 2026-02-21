@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.screen
+package com.vortexsu.vortexsu.ui.screen
 
 import android.content.Context
 import android.content.Intent
@@ -25,13 +25,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.resukisu.resukisu.ui.component.*
-import com.resukisu.resukisu.ui.theme.*
-import com.resukisu.resukisu.ui.viewmodel.KpmViewModel
-import com.resukisu.resukisu.ui.util.*
+import com.vortexsu.vortexsu.ui.component.*
+import com.vortexsu.vortexsu.ui.theme.*
+import com.vortexsu.vortexsu.ui.viewmodel.KpmViewModel
+import com.vortexsu.vortexsu.ui.util.*
 import java.io.File
 import androidx.core.content.edit
-import com.resukisu.resukisu.R
+import com.vortexsu.vortexsu.R
 import java.io.FileInputStream
 import java.net.*
 import android.app.Activity

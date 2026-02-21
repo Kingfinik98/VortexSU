@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.susfs.component
+package com.vortexsu.vortexsu.ui.susfs.component
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageInfo
@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.susfs.util.SuSFSManager
-import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.susfs.util.SuSFSManager
+import com.vortexsu.vortexsu.ui.viewmodel.SuperUserViewModel
 import kotlinx.coroutines.launch
 
 /**

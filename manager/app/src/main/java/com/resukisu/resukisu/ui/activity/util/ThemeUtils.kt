@@ -1,13 +1,13 @@
-package com.resukisu.resukisu.ui.activity.util
+package com.vortexsu.vortexsu.ui.activity.util
 
 import android.content.Context
 import android.database.ContentObserver
 import android.os.Handler
 import android.provider.Settings
 import androidx.core.content.edit
-import com.resukisu.resukisu.ui.MainActivity
-import com.resukisu.resukisu.ui.theme.CardConfig
-import com.resukisu.resukisu.ui.theme.ThemeConfig
+import com.vortexsu.vortexsu.ui.MainActivity
+import com.vortexsu.vortexsu.ui.theme.CardConfig
+import com.vortexsu.vortexsu.ui.theme.ThemeConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class ThemeChangeContentObserver(

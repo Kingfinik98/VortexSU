@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.util.module
+package com.vortexsu.vortexsu.ui.util.module
 
 import android.app.Activity
 import android.content.Context
@@ -11,8 +11,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import com.resukisu.resukisu.R
-import com.resukisu.resukisu.ui.util.reboot
+import com.vortexsu.vortexsu.R
+import com.vortexsu.vortexsu.ui.util.reboot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

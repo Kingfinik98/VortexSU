@@ -1,4 +1,4 @@
-package com.resukisu.resukisu.ui.theme.util
+package com.vortexsu.vortexsu.ui.theme.util
 
 import android.content.ContentResolver
 import android.content.Context
