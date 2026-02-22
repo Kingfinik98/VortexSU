@@ -1,4 +1,3 @@
-#ifndef MANAGER_SIGN_H
 #define MANAGER_SIGN_H
 
 // weishu/KernelSU
