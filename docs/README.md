@@ -1,9 +1,8 @@
-# VORTEXSU
+## VorteXSU UnOFFICUAL 
 
 Unofficial Kernel-Based Root Solution
 
 ---
-
 ## Overview
 
 VORTEXSU is a kernel-based root solution designed for clean integration, stability, and multi-manager compatibility.  
