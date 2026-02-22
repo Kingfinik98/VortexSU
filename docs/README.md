@@ -46,6 +46,7 @@ Use the following command to integrate VORTEXSU into your kernel source:
 curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
 ```
 
+## kpm patch check the contents of this repository
 ```sh
 patch kpm : https://github.com/Kingfinik98/SukiSU_patch.git
 ```
