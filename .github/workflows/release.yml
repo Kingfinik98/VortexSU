@@ -67,12 +67,11 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          # TAMBAHAN PENTING: Logika tag otomatis
-          # Jika manual (workflow_dispatch), buat tag 'ci-build-nomor'.
-          # Jika tag push, gunakan nama tag sebenarnya (misal: v1.0).
-          tag: ${{ github.event_name == 'workflow_dispatch' && format('ci-build-{0}', github.run_number) || github.ref_name }}
+          # PERBAIKAN 1: Ganti 'tag' menjadi 'tag_name'
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && format('ci-build-{0}', github.run_number) || github.ref_name }}
           files: |
-            manager/*.apk
+            # PERBAIKAN 2: Gunakan wildcard **/*.apk agar pasti ketemu
+            **/*.apk
             android*-lkm/*_kernelsu.ko
             AnyKernel3-*.zip
             boot-images-*/Image-*/*.img.gz
