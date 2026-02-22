@@ -27,16 +27,15 @@ Distribution: Unofficial Open Source
 ---
 
 ## Manager Support
-
+```
 Supported managers:
-
 - MamboSU
 - KowSU
 - RKSU
 - VortexSU
 - KernelSU-Next
 - WildKSU
-
+```
 ---
 
 ## Integration
@@ -47,6 +46,9 @@ Use the following command to integrate VORTEXSU into your kernel source:
 curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
 ```
 
+```sh
+patch kpm : https://github.com/Kingfinik98/SukiSU_patch.git
+```
 ## Credits
 
 Special thanks to all developers in the Android root ecosystem.  
