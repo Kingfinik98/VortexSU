@@ -1,4 +1,5 @@
 name: Release
+
 on:
   push:
     tags:
@@ -9,6 +10,7 @@ jobs:
   build-manager:
     uses: ./.github/workflows/build-manager.yml
     secrets: inherit
+
   release:
     needs:
       - build-manager
@@ -16,6 +18,7 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v7
+
       - name: Rename ksud
         run: |
           mkdir -p ksud
@@ -30,6 +33,7 @@ jobs:
                  done
               fi
           done
+
       - name: Zip AnyKernel3
         run: |
           for dir in AnyKernel3-*; do
@@ -60,9 +64,13 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
 
-      - name: release
+      - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          # TAMBAHAN PENTING: Logika tag otomatis
+          # Jika manual (workflow_dispatch), buat tag 'ci-build-nomor'.
+          # Jika tag push, gunakan nama tag sebenarnya (misal: v1.0).
+          tag: ${{ github.event_name == 'workflow_dispatch' && format('ci-build-{0}', github.run_number) || github.ref_name }}
           files: |
             manager/*.apk
             android*-lkm/*_kernelsu.ko
