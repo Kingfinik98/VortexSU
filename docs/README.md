@@ -40,7 +40,7 @@ Supported managers:
 
 ## Integration
 
-Use the following command to integrate VORTEXSU into your kernel source:
+## Use the following command to integrate VORTEXSU into your kernel source:
 
 ```sh
 curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/main/kernel/setup.sh" | bash -s main
@@ -48,7 +48,7 @@ curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/refs/heads/mai
 
 ## kpm patch check the contents of this repository
 ```sh
-patch kpm : https://github.com/Kingfinik98/SukiSU_patch.git
+https://github.com/Kingfinik98/SukiSU_patch.git
 ```
 ## Credits
 
