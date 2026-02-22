@@ -12,6 +12,7 @@
     "7e0c6d7278a3bb8e364e0fcba95afaf3666cf5ff3c245a3b63c8833bd0445cc4"
 
 // rsuntk/KernelSU
+#define EXPECTED_SIZE_RSUNTK 0x396
 #define EXPECTED_HASH_RSUNTK                                                   \
     "f415f4ed9435427e1fdf7f1fccd4dbc07b3d6b8751e4dbcec6f19671f427870b"
 
@@ -24,11 +25,6 @@
 #define EXPECTED_SIZE_NEKO 0x29c
 #define EXPECTED_HASH_NEKO                                                     \
     "946b0557e450a6430a0ba6b6bccee5bc12953ec8735d55e26139b0ec12303b21"
-
-// VortexSU/VortexSU
-#define EXPECTED_SIZE_VORTEXSU 0x377
-#define EXPECTED_HASH_VORTEXSU                                                 \
-    "d3469712b6214462764a1d8d3e5cbe1d6819a0b629791b9f4101867821f1df64"
 
 // MamboSU/MamboSU
 #define EXPECTED_SIZE_MAMBO 0x384
