@@ -3,11 +3,13 @@
 Unofficial Kernel-Based Root Solution
 ---
 ## Overview
+```
 VORTEXSU is a kernel-based root solution designed for clean integration, stability, and multi-manager compatibility
 The root implementation and patch system are fully functional and tested.
 Status: Stable  
 Type: Kernel Root Implementation  
-Distribution: Unofficial Open Source  
+Distribution: Unofficial Open Source
+``` 
 ## Features
 ```
 - Kernel-based root implementation
