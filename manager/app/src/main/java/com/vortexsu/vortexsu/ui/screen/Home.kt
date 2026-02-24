@@ -2,6 +2,7 @@ package com.vortexsu.vortexsu.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.system.Os
@@ -9,7 +10,6 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage // 🔥 IMPORT COIL
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
@@ -114,20 +115,20 @@ fun HomeScreen(navigator: DestinationsNavigator) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val scrollState = rememberScrollState()
 
-    // PERBAIKAN: contentWindowInsets = WindowInsets(0)
     Scaffold(
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,
                 navigator = navigator,
-                isDataLoaded = viewModel.isCoreDataLoaded
+                isDataLoaded = viewModel.isCoreDataLoaded,
+                customBannerUri = viewModel.customBannerUri // 🔥 KIRIM URI KE TOPBAR
             )
         },
-        contentWindowInsets = WindowInsets(0) // 🔥 UBAH JADI INI
+        contentWindowInsets = WindowInsets(0)
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .padding(innerPadding) // Biarkan padding dari Scaffold (hanya tinggi TopBar sekarang)
+                .padding(innerPadding)
                 .fillMaxSize()
                 .pullRefresh(pullRefreshState)
         ) {
@@ -283,7 +284,8 @@ fun RebootDropdownItem(@StringRes id: Int, reason: String = "") {
 private fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigator: DestinationsNavigator,
-    isDataLoaded: Boolean = false
+    isDataLoaded: Boolean = false,
+    customBannerUri: Uri? = null // 🔥 TERIMA URI
 ) {
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
@@ -293,18 +295,16 @@ private fun TopBar(
         colorScheme.background
     }
 
-    // Implementasi Box Custom untuk Full Width Banner
-    // PERBAIKAN: statusBarsPadding dipindah ke Box paling luar & sebelum background
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .statusBarsPadding() // 🔥 PINDAH KE SINI agar background ikut turun
+            .statusBarsPadding()
             .background(cardColor.copy(alpha = cardAlpha))
     ) {
-        // Gambar Banner
-        Image(
-            painter = painterResource(id = R.drawable.header_bg),
+        // 🔥 PERBAIKAN: Gunakan AsyncImage untuk support GIF & Custom URI
+        AsyncImage(
+            model = customBannerUri ?: R.drawable.header_bg, // Kalau custom ada pakai itu, kalau null pakai default
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
@@ -319,35 +319,10 @@ private fun TopBar(
                 .background(Color.Black.copy(alpha = 0.25f))
         )
 
-        // 🔥 DIHAPUS: Konten Tengah (Teks VorteXSU dan Berfungsi)
-        /*
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "VorteXSU",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Berfungsi",
-                color = Color.White,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-        */
-
         // Tombol Aksi Pojok Kanan
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                // HAPUS statusBarsPadding() dari sini
                 .padding(top = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
