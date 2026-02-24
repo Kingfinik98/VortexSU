@@ -2,6 +2,7 @@ package com.vortexsu.vortexsu.ui.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.system.Os
 import androidx.compose.runtime.getValue
@@ -22,6 +23,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.io.File
+import java.io.FileOutputStream
 
 class HomeViewModel : ViewModel() {
 
@@ -67,6 +70,71 @@ class HomeViewModel : ViewModel() {
 
     var latestVersionInfo by mutableStateOf(LatestVersionInfo())
         private set
+
+    // 🔥 START: CUSTOM BANNER LOGIC
+    // Variabel untuk menyimpan URI banner custom (null jika pakai default)
+    var customBannerUri by mutableStateOf<Uri?>(null)
+        private set
+
+    // Nama file banner custom
+    private val bannerFileName = "custom_banner"
+
+    // Fungsi untuk cek apakah ada banner custom
+    fun checkCustomBanner(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val bannerFile = File(context.filesDir, bannerFileName)
+            if (bannerFile.exists()) {
+                customBannerUri = Uri.fromFile(bannerFile)
+            } else {
+                customBannerUri = null
+            }
+        }
+    }
+
+    // Fungsi untuk menyimpan banner baru dari URI (Galeri)
+    fun saveCustomBanner(context: Context, uri: Uri, onSuccess: () -> Unit, onError: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(uri)
+                val outputFile = File(context.filesDir, bannerFileName)
+                
+                if (inputStream != null) {
+                    FileOutputStream(outputFile).use { output ->
+                        inputStream.copyTo(output)
+                    }
+                    inputStream.close()
+                    
+                    // Update state
+                    customBannerUri = Uri.fromFile(outputFile)
+                    
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } else {
+                     withContext(Dispatchers.Main) {
+                        onError()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    onError()
+                }
+            }
+        }
+    }
+
+    // Fungsi untuk reset banner ke default
+    fun resetBanner(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val bannerFile = File(context.filesDir, bannerFileName)
+            if (bannerFile.exists()) {
+                bannerFile.delete()
+            }
+            customBannerUri = null
+        }
+    }
+    // 🔥 END: CUSTOM BANNER LOGIC
 
     var isSimpleMode by mutableStateOf(false)
         private set
@@ -114,6 +182,9 @@ class HomeViewModel : ViewModel() {
             isHideZygiskImplement = settingsPrefs.getBoolean("is_hide_zygisk_Implement", false)
             isHideMetaModuleImplement = settingsPrefs.getBoolean("is_hide_meta_module_Implement", false)
             showKpmInfo = settingsPrefs.getBoolean("show_kpm_info", false)
+            
+            // Cek banner custom saat load setting
+            checkCustomBanner(context)
         }
     }
 
