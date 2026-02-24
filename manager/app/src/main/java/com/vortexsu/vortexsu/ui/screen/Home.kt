@@ -9,6 +9,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -26,15 +28,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.height
-import androidx.compose.foundation.Image
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.pm.PackageInfoCompat
@@ -287,29 +289,61 @@ private fun TopBar(
         colorScheme.background
     }
 
-    TopAppBar(
-        title = {
-            Box(modifier = Modifier.fillMaxWidth().height(100.dp)) {
-                Image(
-                    painter = painterResource(id = R.drawable.header_bg),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "VorteXSU", color = Color.White, style = MaterialTheme.typography.titleLarge)
-                    Text(text = "Berfungsi", color = Color.White, style = MaterialTheme.typography.bodySmall)
-                }
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = cardColor.copy(alpha = cardAlpha),
-            scrolledContainerColor = cardColor.copy(alpha = cardAlpha)
-        ),
-        actions = {
+    // --- PERBAIKAN BANNER: Menggunakan Box custom agar Full Width ---
+    // Mengganti TopAppBar standar yang memiliki padding internal
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp) // Tinggi banner disesuaikan
+            .background(cardColor.copy(alpha = cardAlpha))
+    ) {
+        // Gambar Banner Full (Tanpa Padding)
+        Image(
+            painter = painterResource(id = R.drawable.header_bg),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize() // Mengisi seluruh Box
+                .clipToBounds(), // Memastikan tidak overflow
+            contentScale = ContentScale.Crop // Agar gambar pas & tidak gepeng
+        )
+
+        // Overlay gelap transparan (opsional, agar teks lebih jelas)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.25f))
+        )
+
+        // Teks Tengah "VorteXSU"
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding(), // Menjaga teks agar tidak ketiban status bar
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "VorteXSU",
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Berfungsi",
+                color = Color.White,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
+        // Tombol Aksi (Pojok Kanan Atas)
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .statusBarsPadding() // Menjaga tombol agar tidak ketiban status bar
+                .padding(top = 8.dp, end = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             if (isDataLoaded) {
                 // SuSFS 配置按钮
                 if (getSuSFSStatus().equals("true", ignoreCase = true) && SuSFSManager.isBinaryAvailable(context)) {
@@ -318,7 +352,8 @@ private fun TopBar(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Tune,
-                            contentDescription = stringResource(R.string.susfs_config_setting_title)
+                            contentDescription = stringResource(R.string.susfs_config_setting_title),
+                            tint = Color.White // Warna putih agar kontras
                         )
                     }
                 }
@@ -331,7 +366,8 @@ private fun TopBar(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.PowerSettingsNew,
-                            contentDescription = stringResource(id = R.string.reboot)
+                            contentDescription = stringResource(id = R.string.reboot),
+                            tint = Color.White // Warna putih
                         )
 
                         DropdownMenu(expanded = showDropdown, onDismissRequest = {
@@ -353,10 +389,8 @@ private fun TopBar(
                     }
                 }
             }
-        },
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-        scrollBehavior = scrollBehavior
-    )
+        }
+    }
 }
 
 @Composable
