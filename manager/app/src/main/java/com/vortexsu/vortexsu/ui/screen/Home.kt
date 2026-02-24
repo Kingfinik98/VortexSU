@@ -114,7 +114,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val scrollState = rememberScrollState()
 
-    // PERBAIKAN: contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+    // PERBAIKAN: contentWindowInsets = WindowInsets(0)
     Scaffold(
         topBar = {
             TopBar(
@@ -123,7 +123,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                 isDataLoaded = viewModel.isCoreDataLoaded
             )
         },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets // 🔥 UBAH JADI INI
+        contentWindowInsets = WindowInsets(0) // 🔥 UBAH JADI INI
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -294,10 +294,12 @@ private fun TopBar(
     }
 
     // Implementasi Box Custom untuk Full Width Banner
+    // PERBAIKAN: statusBarsPadding dipindah ke Box paling luar & sebelum background
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
+            .statusBarsPadding() // 🔥 PINDAH KE SINI agar background ikut turun
             .background(cardColor.copy(alpha = cardAlpha))
     ) {
         // Gambar Banner
@@ -321,8 +323,8 @@ private fun TopBar(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
-                .padding(top = 56.dp), // 🔥 PERBAIKAN: Menurunkan teks agar tidak terlalu ke atas
+                // HAPUS statusBarsPadding() dari sini
+                .padding(top = 32.dp), // Padding internal untuk posisi teks
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -344,7 +346,7 @@ private fun TopBar(
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .statusBarsPadding()
+                // HAPUS statusBarsPadding() dari sini
                 .padding(top = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
