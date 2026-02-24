@@ -26,6 +26,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.height
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -285,10 +288,21 @@ private fun TopBar(
 
     TopAppBar(
         title = {
-            Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.titleLarge
-            )
+            Box(modifier = Modifier.fillMaxWidth().height(100.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.header_bg),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "VorteXSU", color = Color.White, style = MaterialTheme.typography.titleLarge)
+                    Text(text = "Berfungsi", color = Color.White, style = MaterialTheme.typography.bodySmall)
+                }
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = cardColor.copy(alpha = cardAlpha),
