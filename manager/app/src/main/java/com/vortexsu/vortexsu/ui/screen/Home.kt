@@ -141,7 +141,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(
-                        top = 20.dp,
+                        top = 16.dp,
                         start = 16.dp,
                         end = 16.dp,
                         bottom = 16.dp
