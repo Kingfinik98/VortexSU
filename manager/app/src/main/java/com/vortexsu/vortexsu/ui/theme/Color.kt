@@ -78,8 +78,8 @@ sealed class ThemeColors {
 
     // DEFAULT THEME - HYBRID GAMING STYLE (MODIFIED)
     object Default : ThemeColors() {
-        // Light Mode (Biarkan standar jika perlu, tapi fokus kita di Dark)
-        override val primaryLight = Color(0xFF00E5FF) // Cyan Neon
+        // Light Mode
+        override val primaryLight = Color(0xFF00E5FF)
         override val onPrimaryLight = Color(0xFF00363D)
         override val primaryContainerLight = Color(0xFFB3F7FF)
         override val onPrimaryContainerLight = Color(0xFF001F24)
@@ -91,7 +91,7 @@ sealed class ThemeColors {
         override val onTertiaryLight = Color(0xFF002022)
         override val tertiaryContainerLight = Color(0xFF9CF1FF)
         override val onTertiaryContainerLight = Color(0xFF001F24)
-        override val errorLight = Color(0xFFFF004D) // Neon Red
+        override val errorLight = Color(0xFFFF004D)
         override val onErrorLight = Color(0xFFFFFFFF)
         override val errorContainerLight = Color(0xFFFFDAD6)
         override val onErrorContainerLight = Color(0xFF410002)
@@ -115,10 +115,10 @@ sealed class ThemeColors {
         override val surfaceContainerHighLight = Color(0xFFE8EBEA)
         override val surfaceContainerHighestLight = Color(0xFFE2E5E4)
 
-        // DARK MODE - CYBERPUNK / GAMING (MODIFIED)
-        override val primaryDark = Color(0xFF00E5FF) // Cyan Neon Terang
+        // DARK MODE
+        override val primaryDark = Color(0xFF00E5FF)
         override val onPrimaryDark = Color(0xFF00363D)
-        override val primaryContainerDark = Color(0xFF004F58) // Dark Cyan Container
+        override val primaryContainerDark = Color(0xFF004F58)
         override val onPrimaryContainerDark = Color(0xFFB3F7FF)
         override val secondaryDark = Color(0xFFB0CCD1)
         override val onSecondaryDark = Color(0xFF1B3438)
@@ -128,32 +128,32 @@ sealed class ThemeColors {
         override val onTertiaryDark = Color(0xFF00363D)
         override val tertiaryContainerDark = Color(0xFF004F58)
         override val onTertiaryContainerDark = Color(0xFFB3F7FF)
-        override val errorDark = Color(0xFFFF004D) // Neon Red Error
+        override val errorDark = Color(0xFFFF004D)
         override val onErrorDark = Color(0xFF690005)
         override val errorContainerDark = Color(0xFF93000A)
         override val onErrorContainerDark = Color(0xFFFFDAD6)
-        override val backgroundDark = Color(0xFF0E1111) // Hampir hitam pekat
+        override val backgroundDark = Color(0xFF0E1111)
         override val onBackgroundDark = Color(0xFFE1E3E2)
-        override val surfaceDark = Color(0xFF151818) // Surface sedikit lebih terang
+        override val surfaceDark = Color(0xFF151818)
         override val onSurfaceDark = Color(0xFFE1E3E2)
         override val surfaceVariantDark = Color(0xFF3F4947)
         override val onSurfaceVariantDark = Color(0xFFBEC9C6)
         override val outlineDark = Color(0xFF899390)
-        override val outlineVariantDark = Color(0xFF3F4947) // Border card samar
+        override val outlineVariantDark = Color(0xFF3F4947)
         override val scrimDark = Color(0xFF000000)
         override val inverseSurfaceDark = Color(0xFFE1E3E2)
         override val inverseOnSurfaceDark = Color(0xFF2D3131)
         override val inversePrimaryDark = Color(0xFF00E5FF)
-        override val surfaceDimDark = Color(0xFF0A0C0C) // Paling gelap
+        override val surfaceDimDark = Color(0xFF0A0C0C)
         override val surfaceBrightDark = Color(0xFF3C3F3F)
         override val surfaceContainerLowestDark = Color(0xFF080909)
         override val surfaceContainerLowDark = Color(0xFF111313)
-        override val surfaceContainerDark = Color(0xFF1A1C1C) // Dasar Card
-        override val surfaceContainerHighDark = Color(0xFF242626) // Elevated Card
+        override val surfaceContainerDark = Color(0xFF1A1C1C)
+        override val surfaceContainerHighDark = Color(0xFF242626)
         override val surfaceContainerHighestDark = Color(0xFF2E3030)
     }
 
-    // 绿色主题
+    // Green Theme
     object Green : ThemeColors() {
         override val primaryLight = Color(0xFF4C662B)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -228,7 +228,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestDark = Color(0xFF33362E)
     }
 
-    // 紫色主题
+    // Purple Theme
     object Purple : ThemeColors() {
         override val primaryLight = Color(0xFF7C4E7E)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -303,7 +303,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestDark = Color(0xFF393338)
     }
 
-    // 橙色主题
+    // Orange Theme
     object Orange : ThemeColors() {
         override val primaryLight = Color(0xFF8B4F24)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -378,7 +378,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestDark = Color(0xFF3D332D)
     }
 
-    // 粉色主题
+    // Pink Theme
     object Pink : ThemeColors() {
         override val primaryLight = Color(0xFF8C4A60)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -453,7 +453,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestDark = Color(0xFF3C3234)
     }
 
-    // 灰色主题
+    // Gray Theme
     object Gray : ThemeColors() {
         override val primaryLight = Color(0xFF5B5C5C)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -528,7 +528,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestDark = Color(0xFF353434)
     }
 
-    // 黄色主题
+    // Yellow Theme
     object Yellow : ThemeColors() {
         override val primaryLight = Color(0xFF6D5E0F)
         override val onPrimaryLight = Color(0xFFFFFFFF)
