@@ -123,7 +123,7 @@ dependencies {
 
     // Library Coil untuk Gambar & GIF
     implementation(libs.io.coil.kt.coil.compose)
-    implementation(libs.coilGif)
+    implementation(libs.coilGif)   // 🔥 Ini yang bikin GIF bisa animasi bergerak
 
     implementation(libs.kotlinx.coroutines.core)
 
