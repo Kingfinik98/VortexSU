@@ -28,9 +28,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -142,12 +140,12 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(
-                        top = 12.dp, // Compact padding
+                        top = 12.dp,
                         start = 12.dp,
                         end = 12.dp,
                         bottom = 16.dp
                     ),
-                verticalArrangement = Arrangement.spacedBy(10.dp) // Compact spacing
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 // Status cards
                 if (viewModel.isCoreDataLoaded) {
@@ -290,11 +288,6 @@ private fun TopBar(
 ) {
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
 
     // GIF Support Loader
     val imageLoader = remember(context) {
@@ -309,12 +302,12 @@ private fun TopBar(
             .build()
     }
 
-    // PERBAIKAN: SPLIT LAYOUT BANNER (Tidak Full Width, Negative Space)
+    // PERBAIKAN: Banner di dalam Card, ada jarak dari pinggir (padding), gambar FULL di dalam card
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp) // Negative space di pinggir
+            .padding(horizontal = 12.dp, vertical = 8.dp) // Jarak dari pinggir layar
     ) {
         ElevatedCard(
             modifier = Modifier
@@ -324,114 +317,79 @@ private fun TopBar(
             colors = getCardColors(colorScheme.surfaceContainerHigh),
             elevation = getCardElevation()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(colorScheme.surfaceContainerHigh.copy(alpha = cardAlpha))
-            ) {
-                // SISI KIRI: Konten Teks & Tombol
-                Column(
+            // Box ini untuk menampung gambar dan tombol
+            Box(modifier = Modifier.fillMaxSize()) {
+                // Banner Image - Full Size di dalam Card
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(customBannerUri ?: R.drawable.header_bg)
+                        .crossfade(true)
+                        .build(),
+                    imageLoader = imageLoader,
+                    contentDescription = null,
                     modifier = Modifier
-                        .weight(0.45f) // Proporsi 45%
-                        .fillMaxHeight()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .fillMaxSize()
+                        .clipToBounds(),
+                    contentScale = ContentScale.Crop // Gambar penuh, tidak terpotong aneh
+                )
+
+                // Overlay Gelap transparan agar tombol kelihatan
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.2f))
+                )
+
+                // Action Buttons - Hanya tombol aksi
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Title Area
-                    Column {
-                        Text(
-                            text = "VorteXSU",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                            color = colorScheme.primary
-                        )
-                        Text(
-                            text = "System Interface",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    // Action Buttons
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (isDataLoaded) {
-                            if (getSuSFSStatus().equals("true", ignoreCase = true) && SuSFSManager.isBinaryAvailable(context)) {
-                                IconButton(onClick = {
-                                    navigator.navigate(SuSFSConfigScreenDestination)
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Tune,
-                                        contentDescription = stringResource(R.string.susfs_config_setting_title),
-                                        tint = colorScheme.primary
-                                    )
-                                }
+                    if (isDataLoaded) {
+                        if (getSuSFSStatus().equals("true", ignoreCase = true) && SuSFSManager.isBinaryAvailable(context)) {
+                            IconButton(onClick = {
+                                navigator.navigate(SuSFSConfigScreenDestination)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Tune,
+                                    contentDescription = stringResource(R.string.susfs_config_setting_title),
+                                    tint = Color.White
+                                )
                             }
+                        }
 
-                            var showDropdown by remember { mutableStateOf(false) }
-                            KsuIsValid {
-                                IconButton(onClick = {
-                                    showDropdown = true
+                        var showDropdown by remember { mutableStateOf(false) }
+                        KsuIsValid {
+                            IconButton(onClick = {
+                                showDropdown = true
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.PowerSettingsNew,
+                                    contentDescription = stringResource(id = R.string.reboot),
+                                    tint = Color.White
+                                )
+
+                                DropdownMenu(expanded = showDropdown, onDismissRequest = {
+                                    showDropdown = false
                                 }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.PowerSettingsNew,
-                                        contentDescription = stringResource(id = R.string.reboot),
-                                        tint = colorScheme.primary
-                                    )
+                                    RebootDropdownItem(id = R.string.reboot)
 
-                                    DropdownMenu(expanded = showDropdown, onDismissRequest = {
-                                        showDropdown = false
-                                    }) {
-                                        RebootDropdownItem(id = R.string.reboot)
-
-                                        val pm =
-                                            LocalContext.current.getSystemService(Context.POWER_SERVICE) as PowerManager?
-                                        @Suppress("DEPRECATION")
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && pm?.isRebootingUserspaceSupported == true) {
-                                            RebootDropdownItem(id = R.string.reboot_userspace, reason = "userspace")
-                                        }
-                                        RebootDropdownItem(id = R.string.reboot_recovery, reason = "recovery")
-                                        RebootDropdownItem(id = R.string.reboot_bootloader, reason = "bootloader")
-                                        RebootDropdownItem(id = R.string.reboot_download, reason = "download")
-                                        RebootDropdownItem(id = R.string.reboot_edl, reason = "edl")
+                                    val pm =
+                                        LocalContext.current.getSystemService(Context.POWER_SERVICE) as PowerManager?
+                                    @Suppress("DEPRECATION")
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && pm?.isRebootingUserspaceSupported == true) {
+                                        RebootDropdownItem(id = R.string.reboot_userspace, reason = "userspace")
                                     }
+                                    RebootDropdownItem(id = R.string.reboot_recovery, reason = "recovery")
+                                    RebootDropdownItem(id = R.string.reboot_bootloader, reason = "bootloader")
+                                    RebootDropdownItem(id = R.string.reboot_download, reason = "download")
+                                    RebootDropdownItem(id = R.string.reboot_edl, reason = "edl")
                                 }
                             }
                         }
                     }
-                }
-
-                // SISI KANAN: Gambar Banner
-                Box(
-                    modifier = Modifier
-                        .weight(0.55f) // Proporsi 55%
-                        .fillMaxHeight()
-                ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(customBannerUri ?: R.drawable.header_bg)
-                            .crossfade(true)
-                            .build(),
-                        imageLoader = imageLoader,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clipToBounds(),
-                        contentScale = ContentScale.Crop
-                    )
-                    // Gradient Overlay untuk menyatukan gambar dengan card
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(
-                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
                 }
             }
         }
@@ -676,7 +634,7 @@ fun WarningCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(onClick?.let { Modifier.clickable { it() } } ?: Modifier)
-                .padding(16.dp), // Compact padding
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
