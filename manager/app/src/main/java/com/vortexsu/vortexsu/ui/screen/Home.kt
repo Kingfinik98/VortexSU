@@ -28,7 +28,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -145,7 +147,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                         end = 12.dp,
                         bottom = 16.dp
                     ),
-                verticalArrangement = Arrangement.spacedBy(10.dp) // Compact spacing
+                verticalArrangement = Arrangement.spacedBy(12.dp) // Spacing antar kartu
             ) {
                 // Status cards
                 if (viewModel.isCoreDataLoaded) {
@@ -288,12 +290,7 @@ private fun TopBar(
 ) {
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
-    val cardColor = if (CardConfig.isCustomBackgroundEnabled) {
-        colorScheme.surfaceContainerLow
-    } else {
-        colorScheme.background
-    }
-
+    
     // GIF Support Loader
     val imageLoader = remember(context) {
         ImageLoader.Builder(context)
@@ -307,14 +304,16 @@ private fun TopBar(
             .build()
     }
 
+    // MODERN SPLIT/FLOATING BANNER STYLE
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
             .statusBarsPadding()
-            .background(cardColor.copy(alpha = cardAlpha))
+            .padding(horizontal = 12.dp, vertical = 8.dp) // Margin agar tidak nabrak pinggir
+            .height(160.dp)
+            .clip(RoundedCornerShape(16.dp)) // Rounded modern
     ) {
-        // Banner Logic Preserved
+        // Background Image (Split Style - Slightly dark overlay for text contrast)
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(customBannerUri ?: R.drawable.header_bg)
@@ -328,18 +327,25 @@ private fun TopBar(
             contentScale = ContentScale.Crop
         )
 
-        // Overlay
+        // Gradient Overlay for Readability
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.25f))
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.Black.copy(alpha = 0.7f), // Heavy shadow left for text
+                            Color.Black.copy(alpha = 0.2f)  // Light shadow right
+                        )
+                    )
+                )
         )
 
-        // Action Buttons
+        // Action Buttons (Right Side - Split Style)
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 8.dp, end = 8.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (isDataLoaded) {
@@ -416,7 +422,7 @@ private fun HybridStatusCard(
                 .clickable(enabled = systemStatus.isRootAvailable || systemStatus.kernelVersion.isGKI()) {
                     onClickInstall()
                 }
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Icon Box
@@ -503,6 +509,7 @@ fun HybridChip(text: String, bgColor: Color, textColor: Color) {
     }
 }
 
+// ================= REVAMPED INFO CARD (NO COLON, GRID LAYOUT) =================
 @Composable
 private fun HybridInfoCard(
     systemInfo: HomeViewModel.SystemInfo,
@@ -520,98 +527,125 @@ private fun HybridInfoCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header
-            Text(
-                text = "SYSTEM SPECS",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            // Dense Rows
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
-                
-                if (!isSimpleMode) {
-                    HybridInfoRow(Icons.Default.Android, stringResource(R.string.home_android_version), systemInfo.androidVersion)
-                }
-
-                HybridInfoRow(Icons.Default.PhoneAndroid, stringResource(R.string.home_device_model), systemInfo.deviceModel)
-
-                HybridInfoRow(
-                    Icons.Default.SettingsSuggest, 
-                    stringResource(R.string.home_manager_version), 
-                    "${systemInfo.managerVersion.first} (${systemInfo.managerVersion.second.toInt()})"
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                 Icon(
+                    imageVector = Icons.Default.Terminal, // Icon header lebih keren
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
                 )
-
-                HybridInfoRow(
-                    Icons.Default.Security, 
-                    stringResource(R.string.home_selinux_status), 
-                    systemInfo.seLinuxStatus,
-                    valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "SYSTEM SPECS",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
                 )
-                
-                // Logic for other infos (KPM, SuSFS, etc) - keep logic intact
-                if (!isSimpleMode && !isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
-                     HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
-                }
-                
-                if (!isSimpleMode && !isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
-                     HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
-                }
+            }
+            
+            Spacer(Modifier.height(12.dp))
+            HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+            Spacer(Modifier.height(12.dp))
 
-                if (!isSimpleMode && !isHideSusfsStatus && systemInfo.suSFSStatus == "Supported" && systemInfo.suSFSVersion.isNotEmpty()) {
-                     val infoText = buildString {
-                        append(systemInfo.suSFSVersion)
-                        append(" (${Natives.getHookType()})")
+            // Grid Layout (2 Columns) for Modern Look
+            Row(modifier = Modifier.fillMaxWidth()) {
+                // Column 1
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    ModernInfoItem(stringResource(R.string.home_kernel), systemInfo.kernelRelease)
+                    
+                    if (!isSimpleMode) {
+                         ModernInfoItem(stringResource(R.string.home_android_version), systemInfo.androidVersion)
                     }
-                    HybridInfoRow(Icons.Default.Storage, stringResource(R.string.home_susfs_version), infoText)
+                    
+                    ModernInfoItem(stringResource(R.string.home_device_model), systemInfo.deviceModel)
+                }
+                
+                Spacer(Modifier.width(16.dp))
+
+                // Column 2
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                     ModernInfoItem(
+                        stringResource(R.string.home_manager_version), 
+                        "${systemInfo.managerVersion.first} (${systemInfo.managerVersion.second.toInt()})"
+                    )
+
+                    ModernInfoItem(
+                        stringResource(R.string.home_selinux_status), 
+                        systemInfo.seLinuxStatus,
+                        valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+            
+            // Extra infos at bottom (Full Width)
+            if (!isSimpleMode) {
+                Spacer(Modifier.height(12.dp))
+                HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                Spacer(Modifier.height(12.dp))
+                
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (!isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
+                         ModernInfoItem(stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement, isInline = true)
+                    }
+                    
+                    if (!isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
+                         ModernInfoItem(stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement, isInline = true)
+                    }
+
+                    if (!isHideSusfsStatus && systemInfo.suSFSStatus == "Supported" && systemInfo.suSFSVersion.isNotEmpty()) {
+                         val infoText = buildString {
+                            append(systemInfo.suSFSVersion)
+                            append(" (${Natives.getHookType()})")
+                        }
+                        ModernInfoItem(stringResource(R.string.home_susfs_version), infoText, isInline = true)
+                    }
                 }
             }
         }
     }
 }
 
+// NEW: Modern Info Item without colon, Label over Value
 @Composable
-fun HybridInfoRow(
-    icon: ImageVector,
+fun ModernInfoItem(
     label: String,
     value: String,
-    valueColor: Color = MaterialTheme.colorScheme.onSurface
+    valueColor: Color = MaterialTheme.colorScheme.onSurface,
+    isInline: Boolean = false // For bottom items
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(16.dp)
-        )
-        Spacer(Modifier.width(10.dp))
-        
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.width(90.dp) // Fixed width for alignment
-        )
-        
-        Text(
-            text = ":",
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
-        )
-        
-        Spacer(Modifier.width(8.dp))
-        
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-            color = valueColor,
-            maxLines = 2,
-            modifier = Modifier.weight(1f)
-        )
+    if (isInline) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                color = valueColor
+            )
+        }
+    } else {
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.5.sp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontFamily = FontFamily.Monospace, 
+                    fontWeight = FontWeight.Medium
+                ),
+                color = valueColor,
+                maxLines = 2
+            )
+        }
     }
 }
 
@@ -790,4 +824,5 @@ private fun WarningCardPreview() {
             MaterialTheme.colorScheme.outlineVariant,
             onClick = {})
     }
+}
 }
