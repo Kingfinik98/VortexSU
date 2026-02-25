@@ -11,18 +11,16 @@ import androidx.compose.ui.unit.dp
 
 @Stable
 object CardConfig {
-    // 卡片透明度
-    var cardAlpha by mutableFloatStateOf(1f)
+    // Ubah default alpha sedikit transparan
+    var cardAlpha by mutableFloatStateOf(0.95f)
         internal set
-    // 卡片亮度
     var cardDim by mutableFloatStateOf(0f)
         internal set
-    // 卡片阴影
+    // Ubah elevation default ke 0 untuk style Flat/Hybrid
     var cardElevation by mutableStateOf(0.dp)
         internal set
 
-    // 功能开关
-    var isShadowEnabled by mutableStateOf(true)
+    var isShadowEnabled by mutableStateOf(false) // Matikan shadow default
         internal set
     var isCustomBackgroundEnabled by mutableStateOf(false)
         internal set
@@ -36,7 +34,6 @@ object CardConfig {
     var isUserLightModeEnabled by mutableStateOf(false)
         internal set
 
-    // 配置键名
     private object Keys {
         const val CARD_ALPHA = "card_alpha"
         const val CARD_DIM = "card_dim"
@@ -65,7 +62,6 @@ object CardConfig {
 
     fun updateBackground(enabled: Boolean) {
         isCustomBackgroundEnabled = enabled
-        // 自定义背景时自动禁用阴影以获得更好的视觉效果
         if (enabled) {
             updateShadow(false)
         }
@@ -90,14 +86,13 @@ object CardConfig {
 
     fun setThemeDefaults(isDarkMode: Boolean) {
         if (!isCustomAlphaSet) {
-            updateAlpha(if (isDarkMode) 0.88f else 1f, false)
+            updateAlpha(if (isDarkMode) 1f else 1f, false)
         }
         if (!isCustomDimSet) {
-            updateDim(if (isDarkMode) 0.25f else 0f, false)
+            updateDim(if (isDarkMode) 0.1f else 0f, false)
         }
-        // 暗色模式下默认启用轻微阴影
         if (isDarkMode && !isCustomBackgroundEnabled) {
-            updateShadow(true, 2.dp)
+            updateShadow(false, 0.dp) // Force no shadow for dark gaming theme
         }
     }
 
@@ -127,11 +122,10 @@ object CardConfig {
         isUserDarkModeEnabled = prefs.getBoolean(Keys.IS_USER_DARK_MODE_ENABLED, false)
         isUserLightModeEnabled = prefs.getBoolean(Keys.IS_USER_LIGHT_MODE_ENABLED, false)
 
-        // 应用阴影设置
         updateShadow(isShadowEnabled, if (isShadowEnabled) cardElevation else 0.dp)
     }
 
-    @Deprecated("使用 updateShadow 替代", ReplaceWith("updateShadow(enabled)"))
+    @Deprecated("Use updateShadow", ReplaceWith("updateShadow(enabled)"))
     fun updateShadowEnabled(enabled: Boolean) {
         updateShadow(enabled)
     }
@@ -184,7 +178,6 @@ object CardStyleProvider {
     }
 }
 
-// 向后兼容
 @Composable
 fun getCardColors(originalColor: Color) = CardStyleProvider.getCardColors(originalColor)
 
