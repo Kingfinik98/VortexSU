@@ -331,10 +331,10 @@ private fun TopBar(
                 // SISI KIRI: Konten Teks & Tombol
                 Column(
                     modifier = Modifier
-                        .weight(0.45f) // Proporsi 45%
+                        .weight(0.45f)
                         .fillMaxHeight()
-                        // PERBAIKAN: Jarak sedikit (20.dp horizontal) agar tidak mepet, tapi tidak terlalu jauh
-                        .padding(horizontal = 20.dp, vertical = 16.dp), 
+                        // PERBAIKAN: Jarak horizontal 20.dp sesuai instruksi
+                        .padding(horizontal = 20.dp, vertical = 16.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     // Title Area
@@ -345,7 +345,7 @@ private fun TopBar(
                             color = colorScheme.primary
                         )
                         Text(
-                            text = "root is my life",
+                            text = "System Interface",
                             style = MaterialTheme.typography.labelSmall,
                             color = colorScheme.onSurfaceVariant
                         )
@@ -404,7 +404,7 @@ private fun TopBar(
                 // SISI KANAN: Gambar Banner
                 Box(
                     modifier = Modifier
-                        .weight(0.55f) // Proporsi 55%
+                        .weight(0.55f)
                         .fillMaxHeight()
                 ) {
                     AsyncImage(
@@ -502,6 +502,7 @@ private fun HybridStatusCard(
                     // Chips for Info
                     if (systemStatus.ksuVersion != null) {
                         HybridChip(
+                            // PERBAIKAN: Diubah dari BUILTIN menjadi GKI sesuai instruksi
                             text = if (systemStatus.lkmMode == true) "LKM" else "GKI",
                             bgColor = successColor.copy(alpha = 0.2f),
                             textColor = successColor
