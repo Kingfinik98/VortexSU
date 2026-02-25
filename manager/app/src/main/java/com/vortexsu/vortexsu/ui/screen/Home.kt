@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -308,12 +309,12 @@ private fun TopBar(
             .build()
     }
 
-    // MODIFIED: Split Layout Banner (Not Full Width, Negative Space)
+    // PERBAIKAN: SPLIT LAYOUT BANNER (Tidak Full Width, Negative Space)
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp) // Creates negative space
+            .padding(horizontal = 12.dp, vertical = 8.dp) // Negative space di pinggir
     ) {
         ElevatedCard(
             modifier = Modifier
@@ -328,10 +329,10 @@ private fun TopBar(
                     .fillMaxSize()
                     .background(colorScheme.surfaceContainerHigh.copy(alpha = cardAlpha))
             ) {
-                // LEFT SIDE: Content
+                // SISI KIRI: Konten Teks & Tombol
                 Column(
                     modifier = Modifier
-                        .weight(0.45f) // 45% width
+                        .weight(0.45f) // Proporsi 45%
                         .fillMaxHeight()
                         .padding(16.dp),
                     verticalArrangement = Arrangement.SpaceBetween
@@ -349,7 +350,7 @@ private fun TopBar(
                             color = colorScheme.onSurfaceVariant
                         )
                     }
-                    
+
                     // Action Buttons
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -400,10 +401,10 @@ private fun TopBar(
                     }
                 }
 
-                // RIGHT SIDE: Banner Image
+                // SISI KANAN: Gambar Banner
                 Box(
                     modifier = Modifier
-                        .weight(0.55f) // 55% width
+                        .weight(0.55f) // Proporsi 55%
                         .fillMaxHeight()
                 ) {
                     AsyncImage(
@@ -418,14 +419,14 @@ private fun TopBar(
                             .clipToBounds(),
                         contentScale = ContentScale.Crop
                     )
-                    // Gradient Overlay for better visual split
+                    // Gradient Overlay untuk menyatukan gambar dengan card
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                brush = androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                brush = Brush.horizontalGradient(
                                     colors = listOf(
-                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.95f),
+                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
                                         Color.Transparent
                                     )
                                 )
@@ -575,7 +576,7 @@ private fun HybridInfoCard(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            // Dense Rows - MODIFIED LAYOUT (No Colons, Vertical Layout per Item)
+            // Dense Rows - PERBAIKAN: Layout Modern Tanpa Titik Dua
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
                 
@@ -640,7 +641,7 @@ fun HybridInfoRow(
         
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = label,
+                text = label, // Hanya Label, TANPA TITIK DUA
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 1.dp)
@@ -834,5 +835,4 @@ private fun WarningCardPreview() {
             MaterialTheme.colorScheme.outlineVariant,
             onClick = {})
     }
-}
 }
