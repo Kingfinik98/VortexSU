@@ -10,8 +10,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.lsplugin.apksign)
     id("kotlin-parcelize")
-
-
 }
 
 val managerVersionCode: Int by rootProject.extra
@@ -25,17 +23,7 @@ apksign {
     keyPasswordProperty = "KEY_PASSWORD"
 }
 
-
 android {
-
-    /**signingConfigs {
-        create("Debug") {
-            storeFile = file("D:\\other\\AndroidTool\\android_key\\keystore\\release-key.keystore")
-            storePassword = ""
-            keyAlias = ""
-            keyPassword = ""
-        }
-    }**/
     namespace = "com.vortexsu.vortexsu"
 
     buildTypes {
@@ -45,9 +33,6 @@ android {
             vcsInfo.include = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-        /**debug {
-            signingConfig = signingConfigs.named("Debug").get() as ApkSigningConfig
-        }**/
     }
 
     buildFeatures {
@@ -62,12 +47,8 @@ android {
             useLegacyPackaging = true
         }
         resources {
-            // https://stackoverflow.com/a/58956288
-            // It will break Layout Inspector, but it's unused for release build.
             excludes += "META-INF/*.version"
-            // https://github.com/Kotlin/kotlinx.coroutines?tab=readme-ov-file#avoiding-including-the-debug-infrastructure-in-the-resulting-apk
             excludes += "DebugProbesKt.bin"
-            // https://issueantenna.com/repo/kotlin/kotlinx.coroutines/issues/3158
             excludes += "kotlin-tooling-metadata.json"
         }
     }
@@ -91,7 +72,6 @@ android {
         }
     }
 
-    // https://stackoverflow.com/a/77745844
     tasks.withType<PackageAndroidArtifact> {
         doFirst { appMetadata.asFile.orNull?.writeText("") }
     }
@@ -141,8 +121,9 @@ dependencies {
 
     implementation(libs.dev.rikka.rikkax.parcelablelist)
 
+    // Library Coil untuk Gambar & GIF
     implementation(libs.io.coil.kt.coil.compose)
-    implementation("io.coil-kt:coil-gif:2.7.0") // <--- TAMBAHKAN BARIS INI (UNTUK GIF)
+    implementation(libs.coilGif)
 
     implementation(libs.kotlinx.coroutines.core)
 
@@ -165,5 +146,4 @@ dependencies {
     implementation(libs.mmrl.ui)
 
     implementation(libs.accompanist.drawablepainter)
-
 }
