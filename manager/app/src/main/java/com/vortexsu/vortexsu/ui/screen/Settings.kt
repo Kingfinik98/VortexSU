@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxkeppeker.sheets.core.models.base.IconSource
 import com.maxkeppeler.sheets.list.models.ListOption
 import com.ramcosta.composedestinations.annotation.Destination
@@ -54,6 +55,7 @@ import com.vortexsu.vortexsu.ui.theme.CardConfig.cardAlpha
 import com.vortexsu.vortexsu.ui.theme.getCardColors
 import com.vortexsu.vortexsu.ui.theme.getCardElevation
 import com.vortexsu.vortexsu.ui.util.*
+import com.vortexsu.vortexsu.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,11 +78,32 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     val snackBarHost = LocalSnackbarHost.current
     val context = LocalContext.current
     val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    
+    // ADD THIS: Get the same ViewModel as Home
+    val homeViewModel = viewModel<HomeViewModel>()
+    val scope = rememberCoroutineScope()
+
     var isSuLogEnabled by remember { mutableStateOf(Natives.isSuLogEnabled()) }
     var selectedEngine by rememberSaveable {
         mutableStateOf(
             prefs.getString("webui_engine", "default") ?: "default"
         )
+    }
+
+    // ADD THIS: Launcher for picking images from gallery
+    val bannerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            homeViewModel.saveCustomBanner(
+                context = context,
+                uri = it,
+                onSuccess = {
+                    Toast.makeText(context, "Banner changed successfully!", Toast.LENGTH_SHORT).show()
+                },
+                onError = {
+                    Toast.makeText(context, "Failed to save banner.", Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
     }
 
     Scaffold(
@@ -118,6 +141,35 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                     snackBarHost.showSnackbar(context.getString(R.string.log_saved))
                 }
             }
+
+            // NEW BLOCK: BANNER CUSTOMIZATION
+            SettingsGroupCard(
+                title = "Banner customization",
+                content = {
+                    // Change Banner Button
+                    SettingItem(
+                        icon = Icons.Filled.Wallpaper,
+                        title = "Change Banner",
+                        summary = "Select image from gallery (PNG/JPG/GIF)",
+                        onClick = {
+                            bannerLauncher.launch("image/*")
+                        }
+                    )
+
+                    // Reset Button (Only appears if custom banner exists)
+                    if (homeViewModel.customBannerUri != null) {
+                        SettingItem(
+                            icon = Icons.Filled.Refresh,
+                            title = "Reset Banner",
+                            summary = "Restore default application banner",
+                            onClick = {
+                                homeViewModel.resetBanner(context)
+                                Toast.makeText(context, "Banner reset to default", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    }
+                }
+            )
 
             // 配置卡片
             KsuIsValid {
