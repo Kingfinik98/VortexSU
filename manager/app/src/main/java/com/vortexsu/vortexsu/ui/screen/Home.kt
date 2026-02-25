@@ -41,7 +41,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage // 🔥 IMPORT COIL
+import coil.ImageLoader
+import coil.compose.AsyncImage
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
@@ -121,7 +125,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                 scrollBehavior = scrollBehavior,
                 navigator = navigator,
                 isDataLoaded = viewModel.isCoreDataLoaded,
-                customBannerUri = viewModel.customBannerUri // 🔥 KIRIM URI KE TOPBAR
+                customBannerUri = viewModel.customBannerUri
             )
         },
         contentWindowInsets = WindowInsets(0)
@@ -137,7 +141,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(
-                        top = 24.dp,
+                        top = 20.dp,
                         start = 16.dp,
                         end = 16.dp,
                         bottom = 16.dp
@@ -285,7 +289,7 @@ private fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigator: DestinationsNavigator,
     isDataLoaded: Boolean = false,
-    customBannerUri: Uri? = null // 🔥 TERIMA URI
+    customBannerUri: Uri? = null
 ) {
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
@@ -295,6 +299,19 @@ private fun TopBar(
         colorScheme.background
     }
 
+    // INI KUNCINYA: Membuat ImageLoader khusus yang support GIF
+    val imageLoader = remember(context) {
+        ImageLoader.Builder(context)
+            .components {
+                if (Build.VERSION.SDK_INT >= 28) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+            }
+            .build()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -302,9 +319,13 @@ private fun TopBar(
             .statusBarsPadding()
             .background(cardColor.copy(alpha = cardAlpha))
     ) {
-        // 🔥 PERBAIKAN: Gunakan AsyncImage untuk support GIF & Custom URI
+        // Gunakan AsyncImage dengan ImageLoader yang sudah diset
         AsyncImage(
-            model = customBannerUri ?: R.drawable.header_bg, // Kalau custom ada pakai itu, kalau null pakai default
+            model = ImageRequest.Builder(context)
+                .data(customBannerUri ?: R.drawable.header_bg)
+                .crossfade(true)
+                .build(),
+            imageLoader = imageLoader, // Parser GIF dipasang di sini
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
