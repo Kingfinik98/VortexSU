@@ -121,9 +121,9 @@ dependencies {
 
     implementation(libs.dev.rikka.rikkax.parcelablelist)
 
-    // Library Coil untuk Gambar & GIF
+    // INI BAGIAN YANG DIPERBAIKI:
     implementation(libs.io.coil.kt.coil.compose)
-    implementation(libs.coilGif)
+    implementation("io.coil-kt:coil-gif:2.7.0") // <--- GANTI
 
     implementation(libs.kotlinx.coroutines.core)
 
