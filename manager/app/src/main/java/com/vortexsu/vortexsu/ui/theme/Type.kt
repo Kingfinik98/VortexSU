@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Menggunakan FontFamily.Monospace untuk kesan Teknikal/Hybrid
+// Semi-Monospace / Technical Style
 val Typography = Typography(
     // Display
     displayLarge = TextStyle(
@@ -58,30 +58,30 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp, // Diperkecil sedikit
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 14.sp, // Compact
+        fontSize = 14.sp, 
         lineHeight = 20.sp,
         letterSpacing = 0.15.sp
     ),
     titleSmall = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Medium,
-        fontSize = 12.sp, // Compact
+        fontSize = 12.sp, 
         lineHeight = 16.sp,
         letterSpacing = 0.1.sp
     ),
 
-    // Body - Paling sering digunakan untuk info
+    // Body - Used for main text values
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Normal,
-        fontSize = 13.sp, // Diperkecil untuk density
+        fontSize = 13.sp, 
         lineHeight = 18.sp,
         letterSpacing = 0.5.sp
     ),
@@ -95,15 +95,15 @@ val Typography = Typography(
     bodySmall = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Normal,
-        fontSize = 10.sp, // Info kecil
+        fontSize = 10.sp, 
         lineHeight = 14.sp,
         letterSpacing = 0.4.sp
     ),
 
-    // Label
+    // Label - Used for small info chips
     labelLarge = TextStyle(
         fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Bold, // Lebih tebal untuk chip
+        fontWeight = FontWeight.Bold, 
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.1.sp
