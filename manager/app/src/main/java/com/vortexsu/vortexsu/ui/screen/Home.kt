@@ -348,8 +348,8 @@ private fun TopBar(
                                     Color.Transparent // Kanan: Gambar Murni
                                 ),
                                 // startX negatif & endX kecil memastikan gradien fokus di kiri
-                                startX = -Float.MAX_VALUE, 
-                                endX = 500f 
+                                startX = -Float.MAX_VALUE,
+                                endX = 500f
                             )
                         )
                 )
@@ -372,7 +372,7 @@ private fun TopBar(
                         color = colorScheme.primary
                     )
                     
-                    // Teks Subtitle
+                    // Teks Subtitle (Diubah menjadi Root is my life)
                     Text(
                         text = "Root is my life",
                         style = MaterialTheme.typography.labelSmall,
@@ -381,7 +381,7 @@ private fun TopBar(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Tombol Aksi (Style Menarik)
+                    // Tombol Aksi (Style Menarik dengan Surface)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -389,7 +389,6 @@ private fun TopBar(
                         if (isDataLoaded) {
                             // Tombol SuSFS
                             if (getSuSFSStatus().equals("true", ignoreCase = true) && SuSFSManager.isBinaryAvailable(context)) {
-                                // Menggunakan Surface agar ada background style
                                 Surface(
                                     onClick = { navigator.navigate(SuSFSConfigScreenDestination) },
                                     shape = RoundedCornerShape(8.dp),
