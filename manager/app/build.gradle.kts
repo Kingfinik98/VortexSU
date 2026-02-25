@@ -142,6 +142,7 @@ dependencies {
     implementation(libs.dev.rikka.rikkax.parcelablelist)
 
     implementation(libs.io.coil.kt.coil.compose)
+    implementation("io.coil-kt:coil-gif:2.7.0") // <--- TAMBAHKAN BARIS INI (UNTUK GIF)
 
     implementation(libs.kotlinx.coroutines.core)
 
