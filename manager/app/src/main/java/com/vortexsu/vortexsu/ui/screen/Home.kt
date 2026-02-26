@@ -308,52 +308,77 @@ private fun TopBar(
             .build()
     }
 
-    // CUSTOM PERSONA HEADER (Banner)
+    // GAYA NEBULASU: OVERLAY (Teks di atas gambar)
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp) // Jarak luar
     ) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp),
-            shape = RoundedCornerShape(20.dp), // Sudut lebih bulat untuk kesan modern
+                .height(180.dp), // Tinggi banner
+            shape = RoundedCornerShape(16.dp),
             colors = getCardColors(colorScheme.surfaceContainerHigh),
             elevation = getCardElevation()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(colorScheme.surfaceContainerHigh.copy(alpha = cardAlpha))
-            ) {
-                // SISI KIRI: Konten Teks & Tombol
+            // Box utama untuk menampung Gambar & Konten
+            Box(modifier = Modifier.fillMaxSize()) {
+                // 1. Background Gambar (Full)
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(customBannerUri ?: R.drawable.header_bg)
+                        .crossfade(true)
+                        .build(),
+                    imageLoader = imageLoader,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clipToBounds(),
+                    contentScale = ContentScale.Crop
+                )
+
+                // 2. Overlay Gradient (Pengganti Box kiri sebelumnya)
+                // Membuat area kiri gelap agar teks terlihat
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color.Black.copy(alpha = 0.7f), // Gelap di kiri
+                                    Color.Black.copy(alpha = 0.4f),
+                                    Color.Transparent // Transparan di kanan
+                                ),
+                                startX = 0f,
+                                endX = 500f // Lebar gradient
+                            )
+                        )
+                )
+
+                // 3. Konten (Teks & Tombol) - SEJAJAR KIRI
                 Column(
                     modifier = Modifier
-                        .weight(0.45f)
-                        .fillMaxHeight()
-                        .padding(horizontal = 12.dp, vertical = 16.dp), // Jarak 12dp
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .align(Alignment.TopStart) // Posisi di kiri atas
+                        .padding(horizontal = 12.dp, vertical = 16.dp), // Jarak sedikit dari tepi
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    // Title Area
-                    Column {
-                        Text(
-                            text = "VorteXSU",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                            color = colorScheme.primary
-                        )
-                        Text(
-                            text = "System Interface",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = "VorteXSU",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = Color.White
+                    )
+                    Text(
+                        text = "System Interface",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     // Action Buttons
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         if (isDataLoaded) {
                             if (getSuSFSStatus().equals("true", ignoreCase = true) && SuSFSManager.isBinaryAvailable(context)) {
                                 IconButton(onClick = {
@@ -362,7 +387,7 @@ private fun TopBar(
                                     Icon(
                                         imageVector = Icons.Filled.Tune,
                                         contentDescription = stringResource(R.string.susfs_config_setting_title),
-                                        tint = colorScheme.primary
+                                        tint = Color.White
                                     )
                                 }
                             }
@@ -375,7 +400,7 @@ private fun TopBar(
                                     Icon(
                                         imageVector = Icons.Filled.PowerSettingsNew,
                                         contentDescription = stringResource(id = R.string.reboot),
-                                        tint = colorScheme.primary
+                                        tint = Color.White
                                     )
 
                                     DropdownMenu(expanded = showDropdown, onDismissRequest = {
@@ -399,39 +424,6 @@ private fun TopBar(
                         }
                     }
                 }
-
-                // SISI KANAN: Gambar Banner
-                Box(
-                    modifier = Modifier
-                        .weight(0.55f)
-                        .fillMaxHeight()
-                ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(customBannerUri ?: R.drawable.header_bg)
-                            .crossfade(true)
-                            .build(),
-                        imageLoader = imageLoader,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clipToBounds(),
-                        contentScale = ContentScale.Crop
-                    )
-                    // Gradient Overlay (Glassmorphism effect)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(
-                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.90f),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-                }
             }
         }
     }
@@ -447,7 +439,6 @@ private fun HybridStatusCard(
     val successColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
-    // Modern Dashboard Style: Semi-transparent background
     val bgColor = if (systemStatus.ksuVersion != null) {
         MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f)
     } else {
@@ -527,7 +518,6 @@ private fun HybridStatusCard(
                 if (!isHideVersion && systemStatus.ksuFullVersion != null) {
                     Text(
                         text = systemStatus.ksuFullVersion,
-                        // Font sistem
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -588,7 +578,7 @@ private fun HybridInfoCard(
             // Dense Rows
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
-                
+
                 if (!isSimpleMode) {
                     HybridInfoRow(Icons.Default.Android, stringResource(R.string.home_android_version), systemInfo.androidVersion)
                 }
@@ -608,17 +598,16 @@ private fun HybridInfoCard(
                     valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
 
-                // Logic intact
                 if (!isSimpleMode && !isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
-                     HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
+                    HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
                 }
 
                 if (!isSimpleMode && !isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
-                     HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
+                    HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
                 }
 
                 if (!isSimpleMode && !isHideSusfsStatus && systemInfo.suSFSStatus == "Supported" && systemInfo.suSFSVersion.isNotEmpty()) {
-                     val infoText = buildString {
+                    val infoText = buildString {
                         append(systemInfo.suSFSVersion)
                         append(" (${Natives.getHookType()})")
                     }
@@ -658,7 +647,6 @@ fun HybridInfoRow(
 
             Text(
                 text = value,
-                // Font sistem
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
