@@ -14,7 +14,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -29,7 +28,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -80,7 +78,7 @@ import kotlin.random.Random
 /**
  * @author ShirkNeko
  * @date 2025/9/29.
- * UI Style Refactor: Modern Dashboard Look
+ * UI Style: Modern Dashboard / NebulaSU Style
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Destination<RootGraph>(start = true)
@@ -143,11 +141,11 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .verticalScroll(scrollState)
                     .padding(
                         top = 12.dp,
-                        start = 16.dp, // Sedikit diperlebar padding samping
+                        start = 16.dp,
                         end = 16.dp,
                         bottom = 16.dp
                     ),
-                verticalArrangement = Arrangement.spacedBy(12.dp) // Spacing antar kartu
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // Status cards
                 if (viewModel.isCoreDataLoaded) {
@@ -318,8 +316,8 @@ private fun TopBar(
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp), // Tinggi dinaikkan sedikit
-            shape = RoundedCornerShape(24.dp), // Lebih bulat
+                .height(180.dp),
+            shape = RoundedCornerShape(24.dp),
             colors = getCardColors(colorScheme.surfaceContainerHigh),
             elevation = getCardElevation()
         ) {
@@ -340,7 +338,7 @@ private fun TopBar(
                     Column {
                         Text(
                             text = "VorteXSU",
-                            style = MaterialTheme.typography.headlineMedium.copy( // Ukuran lebih besar
+                            style = MaterialTheme.typography.headlineMedium.copy(
                                 fontWeight = FontWeight.Black,
                                 letterSpacing = (-0.5).sp
                             ),
@@ -421,7 +419,7 @@ private fun TopBar(
                             .clipToBounds(),
                         contentScale = ContentScale.Crop
                     )
-                    // Gradient Overlay yang lebih smooth
+                    // Gradient Overlay
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -452,9 +450,8 @@ private fun HybridStatusCard(
     val successColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
-    // Background Color Logic (Utuh)
     val bgColor = if (systemStatus.ksuVersion != null) {
-        MaterialTheme.colorScheme.surfaceContainerHigh // Warna lebih solid
+        MaterialTheme.colorScheme.surfaceContainerHigh
     } else {
         MaterialTheme.colorScheme.surfaceContainerHighest
     }
@@ -463,7 +460,7 @@ private fun HybridStatusCard(
         colors = getCardColors(bgColor),
         elevation = getCardElevation(),
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp) // Shape lebih modern
+        shape = RoundedCornerShape(24.dp)
     ) {
         Row(
             modifier = Modifier
@@ -474,13 +471,13 @@ private fun HybridStatusCard(
                 .padding(horizontal = 20.dp, vertical = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icon Box (Dibuat lebih menonjol)
+            // Icon Box
             Box(
                 modifier = Modifier
                     .size(56.dp)
                     .background(
                         color = if (systemStatus.ksuVersion != null) successColor.copy(alpha = 0.15f) else errorColor.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(16.dp) // Square rounded
+                        shape = RoundedCornerShape(16.dp)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -505,7 +502,6 @@ private fun HybridStatusCard(
 
                     Spacer(Modifier.width(10.dp))
 
-                    // Chips
                     if (systemStatus.ksuVersion != null) {
                         HybridChip(
                             text = if (systemStatus.lkmMode == true) "LKM" else "GKI",
@@ -575,6 +571,7 @@ private fun HybridInfoCard(
     showKpmInfo: Boolean,
     lkmMode: Boolean?
 ) {
+    // CARD BESAR UTAMA (Outer Box)
     ElevatedCard(
         colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = getCardElevation(),
@@ -593,44 +590,53 @@ private fun HybridInfoCard(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // Dense Rows
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
-                
-                if (!isSimpleMode) {
-                    HybridInfoRow(Icons.Default.Android, stringResource(R.string.home_android_version), systemInfo.androidVersion)
-                }
-
-                HybridInfoRow(Icons.Default.PhoneAndroid, stringResource(R.string.home_device_model), systemInfo.deviceModel)
-
-                HybridInfoRow(
-                    Icons.Default.SettingsSuggest, 
-                    stringResource(R.string.home_manager_version), 
-                    "${systemInfo.managerVersion.first} (${systemInfo.managerVersion.second.toInt()})"
-                )
-
-                HybridInfoRow(
-                    Icons.Default.Security, 
-                    stringResource(R.string.home_selinux_status), 
-                    systemInfo.seLinuxStatus,
-                    valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                )
-                
-                // Logic intact
-                if (!isSimpleMode && !isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
-                     HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
-                }
-                
-                if (!isSimpleMode && !isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
-                     HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
-                }
-
-                if (!isSimpleMode && !isHideSusfsStatus && systemInfo.suSFSStatus == "Supported" && systemInfo.suSFSVersion.isNotEmpty()) {
-                     val infoText = buildString {
-                        append(systemInfo.suSFSVersion)
-                        append(" (${Natives.getHookType()})")
+            // INNER BOX (Box di dalam Box) - Ini yang bikin gaya NebulaSU
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    // Baris-baris data (Logika utuh)
+                    HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
+                    
+                    if (!isSimpleMode) {
+                        HybridInfoRow(Icons.Default.Android, stringResource(R.string.home_android_version), systemInfo.androidVersion)
                     }
-                    HybridInfoRow(Icons.Default.Storage, stringResource(R.string.home_susfs_version), infoText)
+
+                    HybridInfoRow(Icons.Default.PhoneAndroid, stringResource(R.string.home_device_model), systemInfo.deviceModel)
+
+                    HybridInfoRow(
+                        Icons.Default.SettingsSuggest, 
+                        stringResource(R.string.home_manager_version), 
+                        "${systemInfo.managerVersion.first} (${systemInfo.managerVersion.second.toInt()})"
+                    )
+
+                    HybridInfoRow(
+                        Icons.Default.Security, 
+                        stringResource(R.string.home_selinux_status), 
+                        systemInfo.seLinuxStatus,
+                        valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    )
+                    
+                    if (!isSimpleMode && !isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
+                         HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
+                    }
+                    
+                    if (!isSimpleMode && !isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
+                         HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
+                    }
+
+                    if (!isSimpleMode && !isHideSusfsStatus && systemInfo.suSFSStatus == "Supported" && systemInfo.suSFSVersion.isNotEmpty()) {
+                         val infoText = buildString {
+                            append(systemInfo.suSFSVersion)
+                            append(" (${Natives.getHookType()})")
+                        }
+                        HybridInfoRow(Icons.Default.Storage, stringResource(R.string.home_susfs_version), infoText)
+                    }
                 }
             }
         }
@@ -648,12 +654,12 @@ fun HybridInfoRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Icon Container
+        // Icon Box
         Box(
             modifier = Modifier
                 .size(36.dp)
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainerHigh,
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                     RoundedCornerShape(10.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -661,7 +667,7 @@ fun HybridInfoRow(
              Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -671,8 +677,8 @@ fun HybridInfoRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 2.dp)
             )
             
