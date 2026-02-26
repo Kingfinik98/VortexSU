@@ -71,8 +71,8 @@ class HomeViewModel : ViewModel() {
     var latestVersionInfo by mutableStateOf(LatestVersionInfo())
         private set
 
-    // 🔥 START: CUSTOM BANNER LOGIC
-    // Variabel untuk menyimpan URI banner custom (null jika pakai default)
+    // START: CUSTOM BANNER LOGIC
+    // Variable to store custom banner URI (null if using default)
     var customBannerUri by mutableStateOf<Uri?>(null)
         private set
 
@@ -91,7 +91,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Fungsi untuk menyimpan banner baru dari URI (Galeri)
+    // Function to save new banners from URI (Gallery)
     fun saveCustomBanner(context: Context, uri: Uri, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -124,7 +124,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Fungsi untuk reset banner ke default
+    // Function to reset banner to default
     fun resetBanner(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val bannerFile = File(context.filesDir, bannerFileName)
@@ -134,7 +134,7 @@ class HomeViewModel : ViewModel() {
             customBannerUri = null
         }
     }
-    // 🔥 END: CUSTOM BANNER LOGIC
+    // END: CUSTOM BANNER LOGIC
 
     var isSimpleMode by mutableStateOf(false)
         private set
@@ -162,7 +162,7 @@ class HomeViewModel : ViewModel() {
     var isRefreshing by mutableStateOf(false)
         private set
 
-    // 数据刷新状态流，用于监听变化
+    // Data refreshes the state stream to listen for changes.
     private val _dataRefreshTrigger = MutableStateFlow(0L)
     val dataRefreshTrigger: StateFlow<Long> = _dataRefreshTrigger
 
@@ -183,7 +183,7 @@ class HomeViewModel : ViewModel() {
             isHideMetaModuleImplement = settingsPrefs.getBoolean("is_hide_meta_module_Implement", false)
             showKpmInfo = settingsPrefs.getBoolean("show_kpm_info", false)
             
-            // Cek banner custom saat load setting
+            // Check custom banner when loading settings
             checkCustomBanner(context)
         }
     }
