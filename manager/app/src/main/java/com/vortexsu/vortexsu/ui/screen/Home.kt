@@ -308,18 +308,18 @@ private fun TopBar(
             .build()
     }
 
-    // SPLIT LAYOUT BANNER
+    // CUSTOM PERSONA HEADER (Banner)
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp) // Negative space di pinggir
+            .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(160.dp),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(20.dp), // Sudut lebih bulat untuk kesan modern
             colors = getCardColors(colorScheme.surfaceContainerHigh),
             elevation = getCardElevation()
         ) {
@@ -333,8 +333,7 @@ private fun TopBar(
                     modifier = Modifier
                         .weight(0.45f)
                         .fillMaxHeight()
-                        // PERBAIKAN: Padding 12.dp agar DEKAT ke tulisan/batasi image
-                        .padding(horizontal = 12.dp, vertical = 16.dp),
+                        .padding(horizontal = 12.dp, vertical = 16.dp), // Jarak 12dp
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     // Title Area
@@ -345,7 +344,7 @@ private fun TopBar(
                             color = colorScheme.primary
                         )
                         Text(
-                            text = "root is my life",
+                            text = "System Interface",
                             style = MaterialTheme.typography.labelSmall,
                             color = colorScheme.onSurfaceVariant
                         )
@@ -419,14 +418,14 @@ private fun TopBar(
                             .clipToBounds(),
                         contentScale = ContentScale.Crop
                     )
-                    // Gradient Overlay
+                    // Gradient Overlay (Glassmorphism effect)
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
-                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
+                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.90f),
                                         Color.Transparent
                                     )
                                 )
@@ -448,6 +447,7 @@ private fun HybridStatusCard(
     val successColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
+    // Modern Dashboard Style: Semi-transparent background
     val bgColor = if (systemStatus.ksuVersion != null) {
         MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f)
     } else {
@@ -502,7 +502,7 @@ private fun HybridStatusCard(
                     // Chips for Info
                     if (systemStatus.ksuVersion != null) {
                         HybridChip(
-                            // PERBAIKAN: Diubah dari BUILTIN menjadi GKI
+                            // PERBAIKAN: BUILTIN -> GKI
                             text = if (systemStatus.lkmMode == true) "LKM" else "GKI",
                             bgColor = successColor.copy(alpha = 0.2f),
                             textColor = successColor
@@ -527,8 +527,8 @@ private fun HybridStatusCard(
                 if (!isHideVersion && systemStatus.ksuFullVersion != null) {
                     Text(
                         text = systemStatus.ksuFullVersion,
-                        // Mengikuti sistem, hapus Monospace manual
-                        style = MaterialTheme.typography.bodyMedium, 
+                        // Font sistem
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -544,7 +544,6 @@ fun HybridChip(text: String, bgColor: Color, textColor: Color) {
         color = bgColor,
         modifier = Modifier.height(20.dp)
     ) {
-        // Box untuk center vertikal
         Box(
             modifier = Modifier
                 .fillMaxHeight()
@@ -597,23 +596,23 @@ private fun HybridInfoCard(
                 HybridInfoRow(Icons.Default.PhoneAndroid, stringResource(R.string.home_device_model), systemInfo.deviceModel)
 
                 HybridInfoRow(
-                    Icons.Default.SettingsSuggest, 
-                    stringResource(R.string.home_manager_version), 
+                    Icons.Default.SettingsSuggest,
+                    stringResource(R.string.home_manager_version),
                     "${systemInfo.managerVersion.first} (${systemInfo.managerVersion.second.toInt()})"
                 )
 
                 HybridInfoRow(
-                    Icons.Default.Security, 
-                    stringResource(R.string.home_selinux_status), 
+                    Icons.Default.Security,
+                    stringResource(R.string.home_selinux_status),
                     systemInfo.seLinuxStatus,
                     valueColor = if (systemInfo.seLinuxStatus.equals("Enforcing", true)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
-                
+
                 // Logic intact
                 if (!isSimpleMode && !isHideZygiskImplement && systemInfo.zygiskImplement != "None") {
                      HybridInfoRow(Icons.Default.Adb, stringResource(R.string.home_zygisk_implement), systemInfo.zygiskImplement)
                 }
-                
+
                 if (!isSimpleMode && !isHideMetaModuleImplement && systemInfo.metaModuleImplement != "None") {
                      HybridInfoRow(Icons.Default.Extension, stringResource(R.string.home_meta_module_implement), systemInfo.metaModuleImplement)
                 }
@@ -648,7 +647,7 @@ fun HybridInfoRow(
             modifier = Modifier.size(20.dp)
         )
         Spacer(Modifier.width(12.dp))
-        
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
@@ -656,10 +655,10 @@ fun HybridInfoRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 1.dp)
             )
-            
+
             Text(
                 text = value,
-                // Mengikuti sistem, hapus Monospace manual
+                // Font sistem
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
