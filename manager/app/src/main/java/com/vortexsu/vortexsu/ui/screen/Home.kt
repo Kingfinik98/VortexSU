@@ -14,6 +14,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -28,6 +29,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -78,6 +80,7 @@ import kotlin.random.Random
 /**
  * @author ShirkNeko
  * @date 2025/9/29.
+ * UI Style Refactor: Modern Dashboard Look
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Destination<RootGraph>(start = true)
@@ -102,7 +105,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
             viewModel.loadExtendedData(context)
         }
 
-        // Startup data monitor
         coroutineScope.launch {
             while (true) {
                 delay(5000)
@@ -111,7 +113,6 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    // Listen to refresh trigger
     LaunchedEffect(viewModel.dataRefreshTrigger) {
         viewModel.dataRefreshTrigger.collect { _ -> }
     }
@@ -142,11 +143,11 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .verticalScroll(scrollState)
                     .padding(
                         top = 12.dp,
-                        start = 12.dp,
-                        end = 12.dp,
+                        start = 16.dp, // Sedikit diperlebar padding samping
+                        end = 16.dp,
                         bottom = 16.dp
                     ),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp) // Spacing antar kartu
             ) {
                 // Status cards
                 if (viewModel.isCoreDataLoaded) {
@@ -295,7 +296,6 @@ private fun TopBar(
         colorScheme.background
     }
 
-    // GIF Support Loader
     val imageLoader = remember(context) {
         ImageLoader.Builder(context)
             .components {
@@ -308,18 +308,18 @@ private fun TopBar(
             .build()
     }
 
-    // SPLIT LAYOUT BANNER
+    // MODERN BANNER STYLE
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp) // Negative space di pinggir
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp),
-            shape = RoundedCornerShape(16.dp),
+                .height(180.dp), // Tinggi dinaikkan sedikit
+            shape = RoundedCornerShape(24.dp), // Lebih bulat
             colors = getCardColors(colorScheme.surfaceContainerHigh),
             elevation = getCardElevation()
         ) {
@@ -331,22 +331,24 @@ private fun TopBar(
                 // SISI KIRI: Konten Teks & Tombol
                 Column(
                     modifier = Modifier
-                        .weight(0.45f) // Proporsi 45%
+                        .weight(0.45f)
                         .fillMaxHeight()
-                        // PERBAIKAN: Jarak sedikit (20.dp horizontal) agar tidak mepet, tapi tidak terlalu jauh
-                        .padding(horizontal = 20.dp, vertical = 16.dp), 
+                        .padding(horizontal = 20.dp, vertical = 20.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     // Title Area
                     Column {
                         Text(
                             text = "VorteXSU",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            style = MaterialTheme.typography.headlineMedium.copy( // Ukuran lebih besar
+                                fontWeight = FontWeight.Black,
+                                letterSpacing = (-0.5).sp
+                            ),
                             color = colorScheme.primary
                         )
                         Text(
                             text = "root is my life",
-                            style = MaterialTheme.typography.labelSmall,
+                            style = MaterialTheme.typography.labelMedium,
                             color = colorScheme.onSurfaceVariant
                         )
                     }
@@ -404,7 +406,7 @@ private fun TopBar(
                 // SISI KANAN: Gambar Banner
                 Box(
                     modifier = Modifier
-                        .weight(0.55f) // Proporsi 55%
+                        .weight(0.55f)
                         .fillMaxHeight()
                 ) {
                     AsyncImage(
@@ -419,16 +421,18 @@ private fun TopBar(
                             .clipToBounds(),
                         contentScale = ContentScale.Crop
                     )
-                    // Gradient Overlay
+                    // Gradient Overlay yang lebih smooth
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
-                                        colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
+                                        colorScheme.surfaceContainerHigh,
                                         Color.Transparent
-                                    )
+                                    ),
+                                    startX = 0f,
+                                    endX = 300f
                                 )
                             )
                     )
@@ -448,16 +452,18 @@ private fun HybridStatusCard(
     val successColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
+    // Background Color Logic (Utuh)
     val bgColor = if (systemStatus.ksuVersion != null) {
-        MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.8f)
+        MaterialTheme.colorScheme.surfaceContainerHigh // Warna lebih solid
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.95f)
+        MaterialTheme.colorScheme.surfaceContainerHighest
     }
 
     ElevatedCard(
         colors = getCardColors(bgColor),
         elevation = getCardElevation(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp) // Shape lebih modern
     ) {
         Row(
             modifier = Modifier
@@ -465,16 +471,16 @@ private fun HybridStatusCard(
                 .clickable(enabled = systemStatus.isRootAvailable || systemStatus.kernelVersion.isGKI()) {
                     onClickInstall()
                 }
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(horizontal = 20.dp, vertical = 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icon Box
+            // Icon Box (Dibuat lebih menonjol)
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(56.dp)
                     .background(
                         color = if (systemStatus.ksuVersion != null) successColor.copy(alpha = 0.15f) else errorColor.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(16.dp) // Square rounded
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -482,24 +488,24 @@ private fun HybridStatusCard(
                     imageVector = if (systemStatus.ksuVersion != null) Icons.Outlined.TaskAlt else Icons.Outlined.Block,
                     contentDescription = null,
                     tint = if (systemStatus.ksuVersion != null) successColor else errorColor,
-                    modifier = Modifier.size(26.dp)
+                    modifier = Modifier.size(32.dp)
                 )
             }
 
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.width(20.dp))
 
             // Content
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = if (systemStatus.ksuVersion != null) stringResource(R.string.home_working) else stringResource(R.string.home_unsupported),
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                         color = if (systemStatus.ksuVersion != null) successColor else errorColor
                     )
 
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(10.dp))
 
-                    // Chips for Info
+                    // Chips
                     if (systemStatus.ksuVersion != null) {
                         HybridChip(
                             text = if (systemStatus.lkmMode == true) "LKM" else "GKI",
@@ -518,7 +524,7 @@ private fun HybridStatusCard(
                     }
                 }
 
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(8.dp))
 
                 val isHideVersion = LocalContext.current.getSharedPreferences("settings", Context.MODE_PRIVATE)
                     .getBoolean("is_hide_version", false)
@@ -538,20 +544,19 @@ private fun HybridStatusCard(
 @Composable
 fun HybridChip(text: String, bgColor: Color, textColor: Color) {
     Surface(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(6.dp),
         color = bgColor,
-        modifier = Modifier.height(20.dp)
+        modifier = Modifier.height(22.dp)
     ) {
-        // Box untuk center vertikal
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(horizontal = 6.dp),
+                .padding(horizontal = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = textColor,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1
@@ -573,19 +578,23 @@ private fun HybridInfoCard(
     ElevatedCard(
         colors = getCardColors(MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = getCardElevation(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             // Header
             Text(
                 text = "SYSTEM SPECS",
-                style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 2.sp),
+                style = MaterialTheme.typography.labelLarge.copy(
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
             // Dense Rows
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 HybridInfoRow(Icons.Default.Memory, stringResource(R.string.home_kernel), systemInfo.kernelRelease)
                 
                 if (!isSimpleMode) {
@@ -639,27 +648,39 @@ fun HybridInfoRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(Modifier.width(12.dp))
+        // Icon Container
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .background(
+                    MaterialTheme.colorScheme.surfaceContainerHigh,
+                    RoundedCornerShape(10.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+             Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+       
+        Spacer(Modifier.width(14.dp))
         
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.padding(bottom = 1.dp)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                modifier = Modifier.padding(bottom = 2.dp)
             )
             
             Text(
                 text = value,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.Medium
                 ),
                 color = valueColor,
                 maxLines = 2
@@ -679,6 +700,7 @@ fun WarningCard(
     ElevatedCard(
         colors = getCardColors(color),
         elevation = getCardElevation(),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -703,6 +725,7 @@ fun ContributionCard() {
     ElevatedCard(
         colors = getCardColors(MaterialTheme.colorScheme.surfaceContainer),
         elevation = getCardElevation(),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -736,7 +759,8 @@ fun LearnMoreCard() {
 
     ElevatedCard(
         colors = getCardColors(MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -769,6 +793,7 @@ fun DonateCard() {
     ElevatedCard(
         colors = getCardColors(MaterialTheme.colorScheme.surfaceContainer),
         elevation = getCardElevation(),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
