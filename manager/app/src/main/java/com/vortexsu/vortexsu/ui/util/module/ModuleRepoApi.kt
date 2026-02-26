@@ -1,10 +1,12 @@
 package com.vortexsu.vortexsu.ui.util.module
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Parcelable
 import android.util.Log
 import androidx.compose.runtime.Immutable
 import com.vortexsu.vortexsu.ksuApp
-import com.vortexsu.vortexsu.ui.activity.util.isNetworkAvailable
 import kotlinx.parcelize.Parcelize
 import okhttp3.Request
 import org.json.JSONArray
@@ -42,6 +44,20 @@ data class ReleaseAssetInfo(
     val size: Long,
     val downloadCount: Int
 ) : Parcelable
+
+// --- TAMBAHKAN FUNGSI INI AGAR TIDAK ERROR ---
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork ?: return false
+    val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return when {
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+        else -> false
+    }
+}
+// ----------------------------------------------
 
 fun fetchModuleDetail(moduleId: String): ModuleDetail? {
     if (!isNetworkAvailable(ksuApp)) return null
