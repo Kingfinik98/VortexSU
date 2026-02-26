@@ -28,14 +28,17 @@ The root implementation and patch system are fully functional and tested.
 - **Type:** Kernel Root Implementation  
 - **Distribution:** Unofficial Open Source  
 
+---
+
 ## Integration
 
 Use the following command to integrate VorteXSU into your kernel source:
 
 ```sh
 curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/main/kernel/setup.sh" | bash -s main
-
 ```
+
+---
 
 ## intergration kpm patch
 
@@ -43,16 +46,24 @@ curl -LSs "https://raw.githubusercontent.com/Kingfinik98/VortexSU/main/kernel/se
 curl -LSs "https://github.com/Kingfinik98/SukiSU_patch/raw/refs/heads/main/kpm/patch_linux" -o patch
 ```
 
+---
+
 ## Manager Support
+
 Supported managers:
-- VortexSU 
+
+- VortexSU  
 - KowSU  
 - RKSU  
 - SukiSU Ultra  
 - KernelSU-Next  
-- WildKSU
-- no longer 
+- WildKSU  
+- no longer  
+
+---
+
 ## Features
+
 - Kernel-based root implementation  
 - Fully working patch system  
 - Clean and modular integration  
@@ -60,7 +71,24 @@ Supported managers:
 - Multi-manager compatibility  
 - Suitable for OSS kernel builds  
 
-## Credits Sources & base 
-[Kernelsu Tian ](https://github.com/tiann/KernelSU)
-[SukiSU-Ultra](https://github.com/SukiSU-Ultra/SukiSU-Ultra)
-[ResukiSU](https://github.com/ReSukiSU/ReSukiSU) 
+---
+
+## Credits Sources & Base
+
+<p align="left">
+  <a href="https://github.com/tiann/KernelSU">
+    <img src="https://img.shields.io/badge/GitHub-KernelSU-black?style=for-the-badge&logo=github" />
+  </a>
+</p>
+
+<p align="left">
+  <a href="https://github.com/SukiSU-Ultra/SukiSU-Ultra">
+    <img src="https://img.shields.io/badge/GitHub-SukiSU--Ultra-black?style=for-the-badge&logo=github" />
+  </a>
+</p>
+
+<p align="left">
+  <a href="https://github.com/ReSukiSU/ReSukiSU">
+    <img src="https://img.shields.io/badge/GitHub-ReSukiSU-black?style=for-the-badge&logo=github" />
+  </a>
+</p>
