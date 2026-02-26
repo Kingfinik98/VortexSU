@@ -44,7 +44,7 @@ Supported managers:
 - SukiSU Ultra  
 - KernelSU-Next  
 - WildKSU
-- 
+- no longer 
 ## Features
 - Kernel-based root implementation  
 - Fully working patch system  
