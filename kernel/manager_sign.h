@@ -61,6 +61,11 @@
 #define EXPECTED_HASH_VORTEX                                                    \
     "2b8a1087ec94d19ed3c0aa468fb6dcc3e0af5ea0d683bd64da20051847184e8e"
 
+// ReSukiSU/ReSukiSU
+#define EXPECTED_SIZE_RESUKISU 0x377
+#define EXPECTED_HASH_RESUKISU                                                 \
+    "d3469712b6214462764a1d8d3e5cbe1d6819a0b629791b9f4101867821f1df64"
+
 // Dynamic Sign
 #define EXPECTED_SIZE_OTHER 0x300
 #define EXPECTED_HASH_OTHER                                                    \
