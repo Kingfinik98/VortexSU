@@ -347,7 +347,7 @@ private fun TopBar(
                             color = colorScheme.primary
                         )
                         Text(
-                            text = "Root is freedom",
+                            text = "完全なルート制御",
                             style = MaterialTheme.typography.labelMedium,
                             color = colorScheme.onSurfaceVariant
                         )
