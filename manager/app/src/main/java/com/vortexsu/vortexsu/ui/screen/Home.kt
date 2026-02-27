@@ -78,9 +78,9 @@ import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 /**
- * @author ShirkNeko
- * @date 2025/9/29.
- * UI Style Refactor: Modern Dashboard Look
+ * @author kingfinik98
+ * @date 2026/2/28.
+ * UI Style Refactor: Modern hybrid
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Destination<RootGraph>(start = true)
@@ -347,7 +347,7 @@ private fun TopBar(
                             color = colorScheme.primary
                         )
                         Text(
-                            text = "root is my life",
+                            text = "Advanced Kernel-Based Root Solution",
                             style = MaterialTheme.typography.labelMedium,
                             color = colorScheme.onSurfaceVariant
                         )
