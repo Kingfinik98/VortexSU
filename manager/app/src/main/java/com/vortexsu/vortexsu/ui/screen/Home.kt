@@ -142,8 +142,8 @@ fun HomeScreen(navigator: DestinationsNavigator) {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(
-                        top = 12.dp,
-                        start = 16.dp, // Sedikit diperlebar padding samping
+                        top = 16.dp,
+                        start = 16.dp, // Slightly widened side padding
                         end = 16.dp,
                         bottom = 16.dp
                     ),
@@ -313,7 +313,7 @@ private fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
         ElevatedCard(
             modifier = Modifier
