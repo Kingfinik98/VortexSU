@@ -11,17 +11,20 @@ import androidx.compose.ui.unit.dp
 
 @Stable
 object CardConfig {
-    // Ubah default alpha sedikit transparan
-    var cardAlpha by mutableFloatStateOf(0.95f)
+    // PERUBAHAN: Default alpha diturunkan menjadi 0.80f untuk efek Glass/Blur look
+    var cardAlpha by mutableFloatStateOf(0.80f)
         internal set
+    
     var cardDim by mutableFloatStateOf(0f)
         internal set
-    // Ubah elevation default ke 0 untuk style Flat/Hybrid
+    
+    // PERUBAHAN: Elevation default tetap 0dp untuk style Flat/Glass (tanpa bayangan tebal)
     var cardElevation by mutableStateOf(0.dp)
         internal set
 
-    var isShadowEnabled by mutableStateOf(false) // Matikan shadow default
+    var isShadowEnabled by mutableStateOf(false) // Shadow dinonaktifkan default
         internal set
+    
     var isCustomBackgroundEnabled by mutableStateOf(false)
         internal set
 
@@ -73,10 +76,11 @@ object CardConfig {
     }
 
     fun reset() {
-        cardAlpha = 1f
+        // Reset ke nilai default Glass Theme
+        cardAlpha = 0.80f 
         cardDim = 0f
         cardElevation = 0.dp
-        isShadowEnabled = true
+        isShadowEnabled = false
         isCustomBackgroundEnabled = false
         isCustomAlphaSet = false
         isCustomDimSet = false
@@ -85,14 +89,19 @@ object CardConfig {
     }
 
     fun setThemeDefaults(isDarkMode: Boolean) {
+        // Logika default untuk tema gelap/terang otomatis
         if (!isCustomAlphaSet) {
-            updateAlpha(if (isDarkMode) 1f else 1f, false)
+            // Liquid Glass biasanya butuh transparansi berbeda
+            // Dark mode: lebih transparan (0.75), Light mode: sedikit lebih solid (0.90) agar terbaca
+            updateAlpha(if (isDarkMode) 0.75f else 0.90f, false)
         }
         if (!isCustomDimSet) {
             updateDim(if (isDarkMode) 0.1f else 0f, false)
         }
+        
+        // Force disable shadow for clean Glass look
         if (isDarkMode && !isCustomBackgroundEnabled) {
-            updateShadow(false, 0.dp) // Force no shadow for dark gaming theme
+            updateShadow(false, 0.dp) 
         }
     }
 
@@ -113,10 +122,11 @@ object CardConfig {
 
     fun load(context: Context) {
         val prefs = context.getSharedPreferences("card_settings", Context.MODE_PRIVATE)
-        cardAlpha = prefs.getFloat(Keys.CARD_ALPHA, 1f).coerceIn(0f, 1f)
+        // Load dengan default value baru (Glass style)
+        cardAlpha = prefs.getFloat(Keys.CARD_ALPHA, 0.80f).coerceIn(0f, 1f)
         cardDim = prefs.getFloat(Keys.CARD_DIM, 0f).coerceIn(0f, 1f)
         isCustomBackgroundEnabled = prefs.getBoolean(Keys.CUSTOM_BACKGROUND_ENABLED, false)
-        isShadowEnabled = prefs.getBoolean(Keys.IS_SHADOW_ENABLED, true)
+        isShadowEnabled = prefs.getBoolean(Keys.IS_SHADOW_ENABLED, false) // Default false
         isCustomAlphaSet = prefs.getBoolean(Keys.IS_CUSTOM_ALPHA_SET, false)
         isCustomDimSet = prefs.getBoolean(Keys.IS_CUSTOM_DIM_SET, false)
         isUserDarkModeEnabled = prefs.getBoolean(Keys.IS_USER_DARK_MODE_ENABLED, false)
@@ -135,6 +145,7 @@ object CardStyleProvider {
 
     @Composable
     fun getCardColors(originalColor: Color) = CardDefaults.cardColors(
+        // Menerapkan alpha dari CardConfig (Glass effect)
         containerColor = originalColor.copy(alpha = CardConfig.cardAlpha),
         contentColor = determineContentColor(originalColor),
         disabledContainerColor = originalColor.copy(alpha = CardConfig.cardAlpha * 0.38f),
@@ -170,8 +181,10 @@ object CardStyleProvider {
             CardConfig.isUserLightModeEnabled -> Color.Black
             CardConfig.isUserDarkModeEnabled -> Color.White
             else -> {
+                // Penyesuaian kontras untuk background transparan
                 val luminance = originalColor.luminance()
-                val threshold = if (isDarkTheme) 0.4f else 0.6f
+                // Threshold diturunkan sedikit agar teks putih lebih sering dipakai di dark theme glass
+                val threshold = if (isDarkTheme) 0.3f else 0.6f
                 if (luminance > threshold) Color.Black else Color.White
             }
         }
