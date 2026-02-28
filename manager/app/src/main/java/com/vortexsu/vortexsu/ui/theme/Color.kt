@@ -76,22 +76,22 @@ sealed class ThemeColors {
     abstract val surfaceContainerHighDark: Color
     abstract val surfaceContainerHighestDark: Color
 
-    // DEFAULT THEME - HYBRID GAMING STYLE (MODIFIED)
+    // DEFAULT THEME - LIQUID GLASS / CYBERPUNK STYLE
     object Default : ThemeColors() {
-        // Light Mode
-        override val primaryLight = Color(0xFF00E5FF)
-        override val onPrimaryLight = Color(0xFF00363D)
+        // Light Mode (Disesuaikan agar tetap clean)
+        override val primaryLight = Color(0xFF00B8D4) // Cyan sedikit gelap untuk kontras putih
+        override val onPrimaryLight = Color(0xFFFFFFFF)
         override val primaryContainerLight = Color(0xFFB3F7FF)
         override val onPrimaryContainerLight = Color(0xFF001F24)
         override val secondaryLight = Color(0xFF4A6368)
         override val onSecondaryLight = Color(0xFFFFFFFF)
         override val secondaryContainerLight = Color(0xFFCCE8ED)
         override val onSecondaryContainerLight = Color(0xFF051F23)
-        override val tertiaryLight = Color(0xFF00E5FF)
-        override val onTertiaryLight = Color(0xFF002022)
-        override val tertiaryContainerLight = Color(0xFF9CF1FF)
+        override val tertiaryLight = Color(0xFF00B8D4)
+        override val onTertiaryLight = Color(0xFFFFFFFF)
+        override val tertiaryContainerLight = Color(0xFFB3F7FF)
         override val onTertiaryContainerLight = Color(0xFF001F24)
-        override val errorLight = Color(0xFFFF004D)
+        override val errorLight = Color(0xFFBA1A1A)
         override val onErrorLight = Color(0xFFFFFFFF)
         override val errorContainerLight = Color(0xFFFFDAD6)
         override val onErrorContainerLight = Color(0xFF410002)
@@ -115,8 +115,9 @@ sealed class ThemeColors {
         override val surfaceContainerHighLight = Color(0xFFE8EBEA)
         override val surfaceContainerHighestLight = Color(0xFFE2E5E4)
 
-        // DARK MODE
-        override val primaryDark = Color(0xFF00E5FF)
+        // DARK MODE - LIQUID GLASS AESTHETIC
+        // Fokus pada hitam pekat/nano (Deep Black) agar blur/transparan terlihat jelas
+        override val primaryDark = Color(0xFF00E5FF) // Neon Cyan (Accent utama)
         override val onPrimaryDark = Color(0xFF00363D)
         override val primaryContainerDark = Color(0xFF004F58)
         override val onPrimaryContainerDark = Color(0xFFB3F7FF)
@@ -128,32 +129,40 @@ sealed class ThemeColors {
         override val onTertiaryDark = Color(0xFF00363D)
         override val tertiaryContainerDark = Color(0xFF004F58)
         override val onTertiaryContainerDark = Color(0xFFB3F7FF)
-        override val errorDark = Color(0xFFFF004D)
+        override val errorDark = Color(0xFFFF004D) // Neon Pink/Red untuk error
         override val onErrorDark = Color(0xFF690005)
         override val errorContainerDark = Color(0xFF93000A)
         override val onErrorContainerDark = Color(0xFFFFDAD6)
-        override val backgroundDark = Color(0xFF0E1111)
+        
+        // PERUBAHAN UTAMA: Background super gelap (Virtual Black)
+        override val backgroundDark = Color(0xFF050608) // Hampir hitam total
         override val onBackgroundDark = Color(0xFFE1E3E2)
-        override val surfaceDark = Color(0xFF151818)
+        
+        // Surface sedikit lebih terang dari background untuk depth
+        override val surfaceDark = Color(0xFF0A0C0F) 
         override val onSurfaceDark = Color(0xFFE1E3E2)
-        override val surfaceVariantDark = Color(0xFF3F4947)
+        
+        // Variant untuk card background base
+        override val surfaceVariantDark = Color(0xFF1A1D21) // Abu-abu kebiruan untuk base glass
         override val onSurfaceVariantDark = Color(0xFFBEC9C6)
-        override val outlineDark = Color(0xFF899390)
-        override val outlineVariantDark = Color(0xFF3F4947)
+        override val outlineDark = Color(0xFF3D4148) // Border subtle untuk glass
+        override val outlineVariantDark = Color(0xFF1F2226)
         override val scrimDark = Color(0xFF000000)
         override val inverseSurfaceDark = Color(0xFFE1E3E2)
         override val inverseOnSurfaceDark = Color(0xFF2D3131)
         override val inversePrimaryDark = Color(0xFF00E5FF)
-        override val surfaceDimDark = Color(0xFF0A0C0C)
+        override val surfaceDimDark = Color(0xFF050607)
         override val surfaceBrightDark = Color(0xFF3C3F3F)
-        override val surfaceContainerLowestDark = Color(0xFF080909)
-        override val surfaceContainerLowDark = Color(0xFF111313)
-        override val surfaceContainerDark = Color(0xFF1A1C1C)
-        override val surfaceContainerHighDark = Color(0xFF242626)
-        override val surfaceContainerHighestDark = Color(0xFF2E3030)
+        
+        // Layering untuk efek glass (dari paling gelap ke terang)
+        override val surfaceContainerLowestDark = Color(0xFF030405)
+        override val surfaceContainerLowDark = Color(0xFF080A0C)
+        override val surfaceContainerDark = Color(0xFF0E1013)
+        override val surfaceContainerHighDark = Color(0xFF14171A)
+        override val surfaceContainerHighestDark = Color(0xFF1A1D21)
     }
 
-    // Green Theme
+    // Green Theme (Hijau Gaming)
     object Green : ThemeColors() {
         override val primaryLight = Color(0xFF4C662B)
         override val onPrimaryLight = Color(0xFFFFFFFF)
@@ -192,7 +201,7 @@ sealed class ThemeColors {
         override val surfaceContainerHighestLight = Color(0xFFE2E3D8)
 
         override val primaryDark = Color(0xFFB1D18A)
-        override val onPrimaryDark = Color(0xFF1F3701)
+        override val onPrimaryDark = Color(0xFF1F37001)
         override val primaryContainerDark = Color(0xFF354E16)
         override val onPrimaryContainerDark = Color(0xFFCDEDA3)
         override val secondaryDark = Color(0xFFBFCBAD)
