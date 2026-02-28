@@ -50,7 +50,8 @@ class HomeViewModel : ViewModel() {
         val kpmVersion: String = "",
         val suSFSStatus: String = "",
         val suSFSVersion: String = "",
-        val suSFSVariant: String = "",
+        // PERBAIKAN: Digunakan untuk menyimpan HookType agar tidak dipanggil di UI
+        val suSFSVariant: String = "", 
         val suSFSFeatures: String = "",
         val superuserCount: Int = 0,
         val moduleCount: Int = 0,
@@ -72,14 +73,11 @@ class HomeViewModel : ViewModel() {
         private set
 
     // START: CUSTOM BANNER LOGIC
-    // Variable to store custom banner URI (null if using default)
     var customBannerUri by mutableStateOf<Uri?>(null)
         private set
 
-    // Nama file banner custom
     private val bannerFileName = "custom_banner"
 
-    // Fungsi untuk cek apakah ada banner custom
     fun checkCustomBanner(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val bannerFile = File(context.filesDir, bannerFileName)
@@ -91,7 +89,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Function to save new banners from URI (Gallery)
     fun saveCustomBanner(context: Context, uri: Uri, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -104,7 +101,6 @@ class HomeViewModel : ViewModel() {
                     }
                     inputStream.close()
                     
-                    // Update state
                     customBannerUri = Uri.fromFile(outputFile)
                     
                     withContext(Dispatchers.Main) {
@@ -124,7 +120,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Function to reset banner to default
     fun resetBanner(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val bannerFile = File(context.filesDir, bannerFileName)
@@ -162,7 +157,6 @@ class HomeViewModel : ViewModel() {
     var isRefreshing by mutableStateOf(false)
         private set
 
-    // Data refreshes the state stream to listen for changes.
     private val _dataRefreshTrigger = MutableStateFlow(0L)
     val dataRefreshTrigger: StateFlow<Long> = _dataRefreshTrigger
 
@@ -183,7 +177,6 @@ class HomeViewModel : ViewModel() {
             isHideMetaModuleImplement = settingsPrefs.getBoolean("is_hide_meta_module_Implement", false)
             showKpmInfo = settingsPrefs.getBoolean("show_kpm_info", false)
             
-            // Check custom banner when loading settings
             checkCustomBanner(context)
         }
     }
@@ -275,7 +268,6 @@ class HomeViewModel : ViewModel() {
 
         val job = viewModelScope.launch(Dispatchers.IO) {
             try {
-                // 分批加载
                 delay(50)
 
                 val basicInfo = loadBasicSystemInfo(context)
@@ -289,7 +281,6 @@ class HomeViewModel : ViewModel() {
 
                 delay(100)
 
-                // 加载模块信息
                 if (!isSimpleMode) {
                     val moduleInfo = loadModuleInfo()
                     systemInfo = systemInfo.copy(
@@ -304,20 +295,18 @@ class HomeViewModel : ViewModel() {
 
                 delay(100)
 
-                // 加载SuSFS信息
                 if (!isHideSusfsStatus) {
                     val suSFSInfo = loadSuSFSInfo()
                     systemInfo = systemInfo.copy(
                         suSFSStatus = suSFSInfo.first,
                         suSFSVersion = suSFSInfo.second,
-                        suSFSVariant = suSFSInfo.third,
+                        suSFSVariant = suSFSInfo.third, // HookType dimuat di sini
                         suSFSFeatures = suSFSInfo.fourth,
                     )
                 }
 
                 delay(100)
 
-                // 加载管理器列表
                 val managerInfo = loadManagerInfo()
                 systemInfo = systemInfo.copy(
                     managersList = managerInfo.first,
@@ -335,7 +324,6 @@ class HomeViewModel : ViewModel() {
     fun refreshData(context: Context, forceRefresh: Boolean = false) {
         val currentTime = System.currentTimeMillis()
 
-        // 如果不是强制刷新，检查冷却时间
         if (!forceRefresh && currentTime - lastRefreshTime < refreshCooldown) {
             return
         }
@@ -346,28 +334,19 @@ class HomeViewModel : ViewModel() {
             isRefreshing = true
 
             try {
-                // 取消正在进行的加载任务
                 loadingJobs.forEach { it.cancel() }
                 loadingJobs.clear()
 
-                // 重置状态
                 isCoreDataLoaded = false
                 isExtendedDataLoaded = false
 
-                // 触发数据刷新状态流
                 _dataRefreshTrigger.value = currentTime
 
-                // 重新加载用户设置
                 loadUserSettings(context)
-
-                // 重新加载核心数据
                 loadCoreData()
                 delay(100)
-
-                // 重新加载扩展数据
                 loadExtendedData(context)
 
-                // 检查更新
                 val settingsPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
                 val checkUpdate = settingsPrefs.getBoolean("check_update", true)
                 if (checkUpdate) {
@@ -380,22 +359,18 @@ class HomeViewModel : ViewModel() {
                     }
                 }
             } catch (_: Exception) {
-                // 静默处理错误
             } finally {
                 isRefreshing = false
             }
         }
     }
 
-    // 手动触发刷新（下拉刷新使用）
     fun onPullRefresh(context: Context) {
         refreshData(context, forceRefresh = true)
     }
 
-    // 自动刷新数据（当检测到变化时）
     fun autoRefreshIfNeeded(context: Context) {
         viewModelScope.launch {
-            // 检查是否需要刷新数据
             val needsRefresh = checkIfDataNeedsRefresh()
             if (needsRefresh) {
                 refreshData(context)
@@ -406,7 +381,6 @@ class HomeViewModel : ViewModel() {
     private suspend fun checkIfDataNeedsRefresh(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                // 检查KSU状态是否发生变化
                 val currentKsuVersion = try {
                     if (Natives.isManager) {
                         Natives.version
@@ -415,12 +389,10 @@ class HomeViewModel : ViewModel() {
                     null
                 }
 
-                // 如果KSU版本发生变化，需要刷新
                 if (currentKsuVersion != systemStatus.ksuVersion) {
                     return@withContext true
                 }
 
-                // 检查模块数量是否发生变化
                 val currentModuleCount = try {
                     getModuleCount()
                 } catch (_: Exception) {
@@ -541,6 +513,13 @@ class HomeViewModel : ViewModel() {
             if (suSFSVersion.isEmpty()) {
                 return@withContext Tuple4(suSFS, "", "", "")
             }
+            
+            // OPTIMIZATION: Ambil HookType di background thread
+            val hookType = try {
+                Natives.getHookType()
+            } catch (_: Exception) {
+                ""
+            }
 
             val suSFSFeatures = try {
                 getSuSFSFeatures()
@@ -548,7 +527,7 @@ class HomeViewModel : ViewModel() {
                 ""
             }
 
-            Tuple4(suSFS, suSFSVersion, "", suSFSFeatures)
+            Tuple4(suSFS, suSFSVersion, hookType, suSFSFeatures)
         }
     }
 
