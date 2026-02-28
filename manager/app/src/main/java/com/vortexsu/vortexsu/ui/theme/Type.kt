@@ -6,13 +6,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Menggunakan FontFamily.Default (System Font) untuk performa dan konsistensi global
-// Styling di-tweak khusus untuk tema "Liquid Glass" yang modern, bersih, dan bold
 val Typography = Typography(
-    // Display - Untuk judul besar (jarang dipakai di UI utama tapi perlu didefinisikan)
     displayLarge = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Black, // Extra bold
+        fontWeight = FontWeight.Black,
         fontSize = 57.sp,
         lineHeight = 64.sp,
         letterSpacing = (-0.25).sp
@@ -31,8 +28,6 @@ val Typography = Typography(
         lineHeight = 44.sp,
         letterSpacing = 0.sp
     ),
-
-    // Headline - Untuk Header Section
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
@@ -54,19 +49,17 @@ val Typography = Typography(
         lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
-
-    // Title - Untuk Card Titles (e.g., "Working", "GKI Mode")
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold, // Bold for status cards
+        fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold, // Diubah ke Bold agar status card lebih tegas
-        fontSize = 16.sp, // Sedikit dibesarkan dari default 14sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.15.sp
     ),
@@ -77,19 +70,17 @@ val Typography = Typography(
         lineHeight = 18.sp,
         letterSpacing = 0.1.sp
     ),
-
-    // Body - Untuk Konten Utama & Spesifikasi
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp, // Sedikit dinaikkan untuk keterbacaan
+        fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium, // Medium agar lebih jelas di background glass
-        fontSize = 13.sp, // Ukuran ideal untuk value specs
+        fontWeight = FontWeight.Medium,
+        fontSize = 13.sp,
         lineHeight = 18.sp,
         letterSpacing = 0.15.sp
     ),
@@ -100,14 +91,12 @@ val Typography = Typography(
         lineHeight = 14.sp,
         letterSpacing = 0.4.sp
     ),
-
-    // Label - Untuk Label Kecil & Header Table (e.g., "SYSTEM SPECS")
     labelLarge = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold, // Bold for headers
-        fontSize = 12.sp, // Sedikit dinaikkan
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 1.5.sp // Spacing lebar untuk kesan "Tech" (match dengan HomeScreen)
+        letterSpacing = 1.5.sp
     ),
     labelMedium = TextStyle(
         fontFamily = FontFamily.Default,
@@ -118,7 +107,7 @@ val Typography = Typography(
     ),
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium, // Medium for small tags
+        fontWeight = FontWeight.Medium,
         fontSize = 10.sp,
         lineHeight = 12.sp,
         letterSpacing = 0.5.sp
