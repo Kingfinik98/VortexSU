@@ -1,4 +1,6 @@
 # VorteXSU (Unofficial)
+Original Author: Kingfinik98
+Do not remove credit under GPLv2 compliance.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Kingfinik98/VortexSU/main/docs/VorteXSU.jpg"
