@@ -171,112 +171,49 @@ static int do_check_safemode(void __user *arg)
     return 0;
 }
 
-// New implementation for better allow list handling
-static int do_new_get_allow_list_common(void __user *arg, bool allow)
+static int do_get_allow_list(void __user *arg)
 {
-    struct ksu_new_get_allow_list_cmd cmd;
-    int *arr = NULL;
-    int err = 0;
+    struct ksu_get_allow_list_cmd cmd;
 
     if (copy_from_user(&cmd, arg, sizeof(cmd))) {
         return -EFAULT;
     }
 
-    if (cmd.count) {
-        arr = kmalloc(sizeof(int) * cmd.count, GFP_KERNEL);
-        if (!arr) {
-            return -ENOMEM;
-        }
-    }
-
-    bool success =
-        ksu_get_allow_list(arr, cmd.count, &cmd.count, &cmd.total_count, allow);
+    bool success = ksu_get_allow_list((int *)cmd.uids, (int *)&cmd.count, true);
 
     if (!success) {
-        err = -EFAULT;
-        goto out;
+        return -EFAULT;
     }
 
     if (copy_to_user(arg, &cmd, sizeof(cmd))) {
-        pr_err("new_get_allow_list: copy_to_user count failed\n");
-        err = -EFAULT;
-        goto out;
+        pr_err("get_allow_list: copy_to_user failed\n");
+        return -EFAULT;
     }
 
-    if (cmd.count &&
-        copy_to_user(&((struct ksu_new_get_allow_list_cmd *)arg)->uids, arr,
-                     sizeof(int) * cmd.count)) {
-        pr_err("new_get_allow_list: copy_to_user uids failed\n");
-        err = -EFAULT;
-    }
-
-out:
-    if (arr) {
-        kfree(arr);
-    }
-    return err;
-}
-
-static int do_new_get_deny_list(void __user *arg)
-{
-    return do_new_get_allow_list_common(arg, false);
-}
-
-static int do_new_get_allow_list(void __user *arg)
-{
-    return do_new_get_allow_list_common(arg, true);
-}
-
-// Legacy implementation kept for compatibility
-static int do_get_allow_list_common(void __user *arg, bool allow)
-{
-    int *arr = NULL;
-    int err = 0;
-    u16 count;
-    u32 out_count;
-    static const u16 kSize = 128;
-
-    arr = kmalloc(sizeof(int) * kSize, GFP_KERNEL);
-    if (!arr) {
-        return -ENOMEM;
-    }
-
-    bool success = ksu_get_allow_list(arr, kSize, &count, NULL, allow);
-
-    if (!success) {
-        err = -EFAULT;
-        goto out;
-    }
-
-    out_count = count;
-
-    if (copy_to_user(arg + offsetof(struct ksu_get_allow_list_cmd, count),
-                     &out_count, sizeof(u32))) {
-        pr_err("get_allow_list: copy_to_user count failed\n");
-        err = -EFAULT;
-        goto out;
-    }
-
-    if (copy_to_user(arg, arr, sizeof(u32) * count)) {
-        pr_err("get_allow_list: copy_to_user uids failed\n");
-        err = -EFAULT;
-    }
-
-out:
-    if (arr) {
-        kfree(arr);
-    }
-    return err;
+    return 0;
 }
 
 static int do_get_deny_list(void __user *arg)
 {
-    return do_get_allow_list_common(arg, false);
-}
+    struct ksu_get_allow_list_cmd cmd;
 
-static int do_get_allow_list(void __user *arg)
-{
-    return do_get_allow_list_common(arg, true);
+    if (copy_from_user(&cmd, arg, sizeof(cmd))) {
+        return -EFAULT;
+    }
+
+    bool success =
+        ksu_get_allow_list((int *)cmd.uids, (int *)&cmd.count, false);
+
+    if (!success) {
+        return -EFAULT;
+    }
+
+    if (copy_to_user(arg, &cmd, sizeof(cmd))) {
+        pr_err("get_deny_list: copy_to_user failed\n");
+        return -EFAULT;
+    }
+
+    return 0;
 }
 
 static int do_uid_granted_root(void __user *arg)
@@ -357,23 +294,21 @@ static int do_get_app_profile(void __user *arg)
 static int do_set_app_profile(void __user *arg)
 {
     struct ksu_set_app_profile_cmd cmd;
-    int ret;
 
     if (copy_from_user(&cmd, arg, sizeof(cmd))) {
         pr_err("set_app_profile: copy_from_user failed\n");
         return -EFAULT;
     }
 
-    // Updated logic: save persistent and mark running process
-    ret = ksu_set_app_profile(&cmd.profile);
-    if (!ret) {
-        ksu_persistent_allow_list();
-#ifdef KSU_TP_HOOK
-        ksu_mark_running_process();
+    if (!ksu_set_app_profile(&cmd.profile, true)) {
+#if __SULOG_GATE
+        ksu_sulog_report_manager_operation("SET_APP_PROFILE", current_uid().val,
+                                           cmd.profile.current_uid);
 #endif
+        return -EFAULT;
     }
 
-    return ret;
+    return 0;
 }
 
 static int do_get_feature(void __user *arg)
@@ -576,79 +511,10 @@ static int do_nuke_ext4_sysfs(void __user *arg)
 struct list_head mount_list = LIST_HEAD_INIT(mount_list);
 DECLARE_RWSEM(mount_list_lock);
 
-// Helper functions for umount list management
-static int ksu_umount_list_getsize(struct ksu_manage_try_umount_cmd *cmd,
-                                   bool legacy)
-{
-    // check for pointer first
-    if (!cmd->arg)
-        return -EFAULT;
-
-    struct mount_entry *entry;
-    size_t total_size = 0; // size of list in bytes
-
-    down_read(&mount_list_lock);
-    list_for_each_entry (entry, &mount_list, list) {
-        total_size = total_size + strlen(entry->umountable) + 1; // + 1 for \0
-
-        if (!legacy) {
-            // not legacy, append the size of flags
-            total_size += sizeof(unsigned int);
-        }
-    }
-    up_read(&mount_list_lock);
-
-    // debug
-    pr_info("cmd_manage_try_umount: total_size: %zu\n", total_size);
-
-    if (copy_to_user((size_t __user *)cmd->arg, &total_size,
-                     sizeof(total_size)))
-        return -EFAULT;
-
-    return 0;
-}
-
-static int ksu_umount_list_getlist(struct ksu_manage_try_umount_cmd *cmd,
-                                   bool legacy)
-{
-    if (!cmd->arg)
-        return -EFAULT;
-
-    struct mount_entry *entry;
-    char __user *user_buf = (char __user *)cmd->arg;
-    size_t len;
-
-    down_read(&mount_list_lock);
-
-    list_for_each_entry (entry, &mount_list, list) {
-        len = strlen(entry->umountable) + 1; // +1 for \0
-
-        if (copy_to_user(user_buf, entry->umountable, len)) {
-            up_read(&mount_list_lock);
-            return -EFAULT;
-        }
-        user_buf += len;
-
-        if (!legacy) {
-            // not legacy, we put flags too
-            // userspace can simple use an struct to recv data, because it memory layout are 100% consistent
-            if (copy_to_user(user_buf, &entry->flags, sizeof(entry->flags))) {
-                up_read(&mount_list_lock);
-                return -EFAULT;
-            }
-            user_buf += sizeof(entry->flags);
-        }
-    }
-
-    up_read(&mount_list_lock);
-    return 0;
-}
-
-// Updated function: add_try_umount -> manage_try_umount
-static int manage_try_umount(void __user *arg)
+static int add_try_umount(void __user *arg)
 {
     struct mount_entry *new_entry, *entry, *tmp;
-    struct ksu_manage_try_umount_cmd cmd;
+    struct ksu_add_try_umount_cmd cmd;
     char buf[256] = { 0 };
 
     if (copy_from_user(&cmd, arg, sizeof cmd))
@@ -684,7 +550,7 @@ static int manage_try_umount(void __user *arg)
         new_entry->umountable = kstrdup(buf, GFP_KERNEL);
         if (!new_entry->umountable) {
             kfree(new_entry);
-            return -ENOMEM;
+            return -1;
         }
 
         down_write(&mount_list_lock);
@@ -693,11 +559,11 @@ static int manage_try_umount(void __user *arg)
         // if this gets too many, we can consider moving this whole task to a kthread
         list_for_each_entry (entry, &mount_list, list) {
             if (!strcmp(entry->umountable, buf)) {
-                pr_info("cmd_manage_try_umount: %s is already here!\n", buf);
+                pr_info("cmd_add_try_umount: %s is already here!\n", buf);
                 up_write(&mount_list_lock);
                 kfree(new_entry->umountable);
                 kfree(new_entry);
-                return -EEXIST;
+                return -1;
             }
         }
 
@@ -711,7 +577,7 @@ static int manage_try_umount(void __user *arg)
         // debug
         list_add(&new_entry->list, &mount_list);
         up_write(&mount_list_lock);
-        pr_info("cmd_manage_try_umount: %s added!\n", buf);
+        pr_info("cmd_add_try_umount: %s added!\n", buf);
 
         return 0;
     }
@@ -728,7 +594,7 @@ static int manage_try_umount(void __user *arg)
         down_write(&mount_list_lock);
         list_for_each_entry_safe (entry, tmp, &mount_list, list) {
             if (!strcmp(entry->umountable, buf)) {
-                pr_info("cmd_manage_try_umount: entry removed: %s\n",
+                pr_info("cmd_add_try_umount: entry removed: %s\n",
                         entry->umountable);
                 list_del(&entry->list);
                 kfree(entry->umountable);
@@ -739,29 +605,9 @@ static int manage_try_umount(void __user *arg)
 
         return 0;
     }
-    // this way userspace can deduce the memory it has to prepare.
-    case KSU_UMOUNT_GETSIZE_LEGACY: {
-        return ksu_umount_list_getsize(&cmd, true);
-    }
 
-    case KSU_UMOUNT_GETSIZE_NEW: {
-        return ksu_umount_list_getsize(&cmd, false);
-    }
-
-    // WARNING! this is straight up pointerwalking.
-    // this way we dont need to redefine the ioctl defs.
-    // this also avoids us needing to kmalloc
-    // userspace have to send pointer to memory or pointer to a VLA.
-    // userspace also has to process the flat blob itself and zero init properly.
-    case KSU_UMOUNT_GETLIST_LEGACY: {
-        return ksu_umount_list_getlist(&cmd, true);
-    }
-
-    case KSU_UMOUNT_GETLIST_NEW: {
-        return ksu_umount_list_getlist(&cmd, false);
-    }
     default: {
-        pr_err("cmd_manage_try_umount: invalid operation %u\n", cmd.mode);
+        pr_err("cmd_add_try_umount: invalid operation %u\n", cmd.mode);
         return -EINVAL;
     }
 
@@ -798,7 +644,7 @@ static int do_get_hook_type(void __user *arg)
 #if defined(CONFIG_KSU_MANUAL_HOOK)
     type = "Manual";
 #elif defined(CONFIG_KSU_SUSFS)
-    type = "Inline"; // Changed from "Inline (SusFS)"
+    type = "Inline (SusFS)";
 #endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 13, 0)
@@ -905,15 +751,6 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
       .name = "GET_DENY_LIST",
       .handler = do_get_deny_list,
       .perm_check = manager_or_root },
-    // Added New Allow List IOCTL
-    { .cmd = KSU_IOCTL_NEW_GET_ALLOW_LIST,
-      .name = "NEW_GET_ALLOW_LIST",
-      .handler = do_new_get_allow_list,
-      .perm_check = manager_or_root },
-    { .cmd = KSU_IOCTL_NEW_GET_DENY_LIST,
-      .name = "NEW_GET_DENY_LIST",
-      .handler = do_new_get_deny_list,
-      .perm_check = manager_or_root },
     { .cmd = KSU_IOCTL_UID_GRANTED_ROOT,
       .name = "UID_GRANTED_ROOT",
       .handler = do_uid_granted_root,
@@ -954,10 +791,9 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
       .name = "NUKE_EXT4_SYSFS",
       .handler = do_nuke_ext4_sysfs,
       .perm_check = manager_or_root },
-    // Updated Umount IOCTL Name and Handler
-    { .cmd = KSU_IOCTL_MANAGE_TRY_UMOUNT,
-      .name = "MANAGE_TRY_UMOUNT",
-      .handler = manage_try_umount,
+    { .cmd = KSU_IOCTL_ADD_TRY_UMOUNT,
+      .name = "ADD_TRY_UMOUNT",
+      .handler = add_try_umount,
       .perm_check = manager_or_root },
     { .cmd = KSU_IOCTL_GET_FULL_VERSION,
       .name = "GET_FULL_VERSION",
@@ -983,6 +819,16 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
     { .cmd = KSU_IOCTL_KPM,
       .name = "KPM_OPERATION",
       .handler = do_kpm,
+      .perm_check = manager_or_root },
+#endif
+#ifdef CONFIG_KSU_MULTI_MANAGER_SUPPORT
+    { .cmd = KSU_IOCTL_GET_HOOK_MODE,
+      .name = "GET_HOOK_MODE",
+      .handler = do_get_hook_type,
+      .perm_check = manager_or_root },
+    { .cmd = KSU_IOCTL_GET_VERSION_TAG,
+      .name = "GET_VERSION_TAG",
+      .handler = do_get_full_version,
       .perm_check = manager_or_root },
 #endif
     { .cmd = 0, .name = NULL, .handler = NULL, .perm_check = NULL } // Sentine
@@ -1139,8 +985,7 @@ static int reboot_handler_pre(struct kprobe *p, struct pt_regs *regs)
     int cmd = (int)PT_REGS_PARM3(real_regs);
     void __user **arg = (void __user **)&PT_REGS_SYSCALL_PARM4(real_regs);
 
-    ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
-    return 0; // Fixed: Always return 0 to avoid blocking real reboot
+    return ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
 }
 
 static struct kprobe reboot_kp = {
