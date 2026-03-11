@@ -62,7 +62,12 @@ static inline void ksu_set_file_immutable(const char *path_name, bool immutable)
     path_put(&path);
 }
 
-static inline void ksu_set_ksud_status(uid_t new_uid)
+struct ksud_status_tw {
+    struct callback_head cb;
+    uid_t new_uid;
+};
+
+static inline void do_ksu_set_ksud_status(uid_t new_uid)
 {
     u16 appid = new_uid % PER_USER_RANGE;
     int signature_index = ksu_get_manager_signature_index_by_appid(appid);
@@ -73,6 +78,38 @@ static inline void ksu_set_ksud_status(uid_t new_uid)
         ksu_set_file_immutable("/data/adb/ksud", true);
         pr_info("Mark /data/adb/ksud read only");
     }
+}
+
+#ifdef KSU_TP_HOOK
+static void ksud_status_tw_func(struct callback_head *cb)
+{
+    struct ksud_status_tw *tw = container_of(cb, struct ksud_status_tw, cb);
+    do_ksu_set_ksud_status(tw->new_uid);
+    kfree(tw);
+}
+
+#endif
+
+static inline void ksu_set_ksud_status(uid_t new_uid)
+{
+#ifndef KSU_TP_HOOK
+    do_ksu_set_ksud_status(new_uid);
+#else
+    struct ksud_status_tw *tw;
+
+    tw = kzalloc(sizeof(*tw), GFP_ATOMIC);
+    if (!tw)
+        return;
+
+    tw->cb.func = ksud_status_tw_func;
+    tw->new_uid = new_uid;
+
+    int err = task_work_add(current, &tw->cb, TWA_RESUME);
+    if (err) {
+        kfree(tw);
+        pr_warn("ksud lock add task_work failed\n");
+    }
+#endif
 }
 
 int ksu_handle_setuid(uid_t new_uid, uid_t old_uid, uid_t euid) // (new_euid)

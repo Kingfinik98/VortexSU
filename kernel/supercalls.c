@@ -171,49 +171,110 @@ static int do_check_safemode(void __user *arg)
     return 0;
 }
 
-static int do_get_allow_list(void __user *arg)
+static int do_new_get_allow_list_common(void __user *arg, bool allow)
 {
-    struct ksu_get_allow_list_cmd cmd;
+    struct ksu_new_get_allow_list_cmd cmd;
+    int *arr = NULL;
+    int err = 0;
 
     if (copy_from_user(&cmd, arg, sizeof(cmd))) {
         return -EFAULT;
     }
 
-    bool success = ksu_get_allow_list((int *)cmd.uids, (int *)&cmd.count, true);
+    if (cmd.count) {
+        arr = kmalloc(sizeof(int) * cmd.count, GFP_KERNEL);
+        if (!arr) {
+            return -ENOMEM;
+        }
+    }
+
+    bool success =
+        ksu_get_allow_list(arr, cmd.count, &cmd.count, &cmd.total_count, allow);
 
     if (!success) {
-        return -EFAULT;
+        err = -EFAULT;
+        goto out;
     }
 
     if (copy_to_user(arg, &cmd, sizeof(cmd))) {
-        pr_err("get_allow_list: copy_to_user failed\n");
-        return -EFAULT;
+        pr_err("new_get_allow_list: copy_to_user count failed\n");
+        err = -EFAULT;
+        goto out;
     }
 
-    return 0;
+    if (cmd.count &&
+        copy_to_user(&((struct ksu_new_get_allow_list_cmd *)arg)->uids, arr,
+                     sizeof(int) * cmd.count)) {
+        pr_err("new_get_allow_list: copy_to_user uids failed\n");
+        err = -EFAULT;
+    }
+
+out:
+    if (arr) {
+        kfree(arr);
+    }
+    return err;
+}
+
+static int do_new_get_deny_list(void __user *arg)
+{
+    return do_new_get_allow_list_common(arg, false);
+}
+
+static int do_new_get_allow_list(void __user *arg)
+{
+    return do_new_get_allow_list_common(arg, true);
+}
+
+static int do_get_allow_list_common(void __user *arg, bool allow)
+{
+    int *arr = NULL;
+    int err = 0;
+    u16 count;
+    u32 out_count;
+    static const u16 kSize = 128;
+
+    arr = kmalloc(sizeof(int) * kSize, GFP_KERNEL);
+    if (!arr) {
+        return -ENOMEM;
+    }
+
+    bool success = ksu_get_allow_list(arr, kSize, &count, NULL, allow);
+
+    if (!success) {
+        err = -EFAULT;
+        goto out;
+    }
+
+    out_count = count;
+
+    if (copy_to_user(arg + offsetof(struct ksu_get_allow_list_cmd, count),
+                     &out_count, sizeof(u32))) {
+        pr_err("get_allow_list: copy_to_user count failed\n");
+        err = -EFAULT;
+        goto out;
+    }
+
+    if (copy_to_user(arg, arr, sizeof(u32) * count)) {
+        pr_err("get_allow_list: copy_to_user uids failed\n");
+        err = -EFAULT;
+    }
+
+out:
+    if (arr) {
+        kfree(arr);
+    }
+    return err;
 }
 
 static int do_get_deny_list(void __user *arg)
 {
-    struct ksu_get_allow_list_cmd cmd;
+    return do_get_allow_list_common(arg, false);
+}
 
-    if (copy_from_user(&cmd, arg, sizeof(cmd))) {
-        return -EFAULT;
-    }
-
-    bool success =
-        ksu_get_allow_list((int *)cmd.uids, (int *)&cmd.count, false);
-
-    if (!success) {
-        return -EFAULT;
-    }
-
-    if (copy_to_user(arg, &cmd, sizeof(cmd))) {
-        pr_err("get_deny_list: copy_to_user failed\n");
-        return -EFAULT;
-    }
-
-    return 0;
+static int do_get_allow_list(void __user *arg)
+{
+    return do_get_allow_list_common(arg, true);
 }
 
 static int do_uid_granted_root(void __user *arg)
@@ -294,21 +355,22 @@ static int do_get_app_profile(void __user *arg)
 static int do_set_app_profile(void __user *arg)
 {
     struct ksu_set_app_profile_cmd cmd;
+    int ret;
 
     if (copy_from_user(&cmd, arg, sizeof(cmd))) {
         pr_err("set_app_profile: copy_from_user failed\n");
         return -EFAULT;
     }
 
-    if (!ksu_set_app_profile(&cmd.profile, true)) {
-#if __SULOG_GATE
-        ksu_sulog_report_manager_operation("SET_APP_PROFILE", current_uid().val,
-                                           cmd.profile.current_uid);
+    ret = ksu_set_app_profile(&cmd.profile);
+    if (!ret) {
+        ksu_persistent_allow_list();
+#ifdef KSU_TP_HOOK
+        ksu_mark_running_process();
 #endif
-        return -EFAULT;
     }
 
-    return 0;
+    return ret;
 }
 
 static int do_get_feature(void __user *arg)
@@ -550,7 +612,7 @@ static int add_try_umount(void __user *arg)
         new_entry->umountable = kstrdup(buf, GFP_KERNEL);
         if (!new_entry->umountable) {
             kfree(new_entry);
-            return -1;
+            return -ENOMEM;
         }
 
         down_write(&mount_list_lock);
@@ -563,7 +625,7 @@ static int add_try_umount(void __user *arg)
                 up_write(&mount_list_lock);
                 kfree(new_entry->umountable);
                 kfree(new_entry);
-                return -1;
+                return -EEXIST;
             }
         }
 
@@ -751,6 +813,14 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
       .name = "GET_DENY_LIST",
       .handler = do_get_deny_list,
       .perm_check = manager_or_root },
+    { .cmd = KSU_IOCTL_NEW_GET_ALLOW_LIST,
+      .name = "NEW_GET_ALLOW_LIST",
+      .handler = do_new_get_allow_list,
+      .perm_check = manager_or_root },
+    { .cmd = KSU_IOCTL_NEW_GET_DENY_LIST,
+      .name = "NEW_GET_DENY_LIST",
+      .handler = do_new_get_deny_list,
+      .perm_check = manager_or_root },
     { .cmd = KSU_IOCTL_UID_GRANTED_ROOT,
       .name = "UID_GRANTED_ROOT",
       .handler = do_uid_granted_root,
@@ -899,9 +969,6 @@ int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd,
             susfs_add_sus_path_loop(arg);
             return 0;
         }
-        // Deprecated commands removed:
-        // CMD_SUSFS_SET_ANDROID_DATA_ROOT_PATH
-        // CMD_SUSFS_SET_SDCARD_ROOT_PATH
 #endif //#ifdef CONFIG_KSU_SUSFS_SUS_PATH
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
         if (cmd == CMD_SUSFS_HIDE_SUS_MNTS_FOR_NON_SU_PROCS) {
@@ -985,7 +1052,8 @@ static int reboot_handler_pre(struct kprobe *p, struct pt_regs *regs)
     int cmd = (int)PT_REGS_PARM3(real_regs);
     void __user **arg = (void __user **)&PT_REGS_SYSCALL_PARM4(real_regs);
 
-    return ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
+    ksu_handle_sys_reboot(magic1, magic2, cmd, arg);
+    return 0;
 }
 
 static struct kprobe reboot_kp = {
