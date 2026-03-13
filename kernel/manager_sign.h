@@ -66,7 +66,7 @@
 #define EXPECTED_HASH_RESUKISU                                                 \
     "d3469712b6214462764a1d8d3e5cbe1d6819a0b629791b9f4101867821f1df64"
 
-// Dynamic Sign
+// kaminarich/KamiSU
 #define EXPECTED_SIZE_OTHER 0x2e8
 #define EXPECTED_HASH_OTHER                                                    \
     "13c415105fad7b798e5584798d82ea334729f0c24de7b9d4cd2f2e1b062eb566"
