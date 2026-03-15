@@ -339,7 +339,7 @@ private fun TopBar(
                     // Title Area
                     Column {
                         Text(
-                            text = "VorteXSU",
+                            text = "VorteX",
                             style = MaterialTheme.typography.headlineMedium.copy( // Ukuran lebih besar
                                 fontWeight = FontWeight.Black,
                                 letterSpacing = (-0.5).sp
@@ -508,7 +508,7 @@ private fun HybridStatusCard(
                     // Chips
                     if (systemStatus.ksuVersion != null) {
                         HybridChip(
-                            text = if (systemStatus.lkmMode == true) "LKM" else "Builtin",
+                            text = if (systemStatus.lkmMode == true) "LKM" else "Built-in",
                             bgColor = successColor.copy(alpha = 0.2f),
                             textColor = successColor
                         )
