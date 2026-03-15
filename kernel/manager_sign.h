@@ -56,10 +56,10 @@
 #define EXPECTED_HASH_VORTEXSU                                                    \
     "67eec44718428adad14e6a9dca57822759aba7e77a8cad7071f6f6704df8bb48"
 
-// kingfinik98/kernelSU (VorteXSU)
-#define EXPECTED_SIZE_VORTEX 0x385
+// kingfinik98/VorteX (VorteXSU)
+#define EXPECTED_SIZE_VORTEX 0x317
 #define EXPECTED_HASH_VORTEX                                                    \
-    "2b8a1087ec94d19ed3c0aa468fb6dcc3e0af5ea0d683bd64da20051847184e8e"
+    "4d3c9a3f40b4acab5d89d74eb5f2edf92a6af71a366b9484de507220739d025b"
 
 // ReSukiSU/ReSukiSU
 #define EXPECTED_SIZE_RESUKISU 0x377
