@@ -308,12 +308,12 @@ private fun TopBar(
             .build()
     }
 
-    // MODERN BANNER STYLE - DENGAN PADDING VERTICAL LEBIH RAPAT
+    // MODERN BANNER STYLE - RAPAT ATAS
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 4.dp) // Diubah dari 12.dp menjadi 4.dp
+            // DIHAPUS: .statusBarsPadding() agar card naik ke atas
+            .padding(horizontal = 16.dp, vertical = 4.dp) // Jarak samping dan sedikit vertikal
     ) {
         ElevatedCard(
             modifier = Modifier
@@ -333,6 +333,7 @@ private fun TopBar(
                     modifier = Modifier
                         .weight(0.45f)
                         .fillMaxHeight()
+                        .statusBarsPadding() // DIPINDAHKAN KE SINI: Agar teks tidak ketutup status bar
                         .padding(horizontal = 20.dp, vertical = 20.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
