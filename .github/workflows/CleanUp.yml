@@ -1,0 +1,57 @@
+name: Cleanup Artifacts & Check Storage
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  cleanup-and-check:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: 📊 Check Storage Before
+        id: before
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          STORAGE=$(gh api repos/${{ github.repository }}/actions/cache/usage --jq '.active_caches_size_mb // 0' 2>/dev/null || echo "0")
+          ARTIFACTS=$(gh api repos/${{ github.repository }}/actions/artifacts --jq '.total_count // 0' 2>/dev/null || echo "0")
+          
+          echo "## 📊 SEBELUM CLEANUP" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifacts | Cache |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ${ARTIFACTS} | ${STORAGE} MB |" >> $GITHUB_STEP_SUMMARY
+          
+          echo "artifact_count=${ARTIFACTS}" >> $GITHUB_OUTPUT
+
+      - name: 🗑️ Delete All Artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '0 days'
+          skip-recent: 0
+
+      - name: 🧹 Delete All Caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CACHE_IDS=$(gh api repos/${{ github.repository }}/actions/caches --jq '.active_caches[].id' 2>/dev/null || true)
+          if [ -n "$CACHE_IDS" ]; then
+            for ID in $CACHE_IDS; do
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$ID --silent 2>/dev/null || true
+            done
+          fi
+
+      - name: ✅ Check Storage After
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sleep 5
+          STORAGE_AFTER=$(gh api repos/${{ github.repository }}/actions/cache/usage --jq '.active_caches_size_mb // 0' 2>/dev/null || echo "0")
+          ARTIFACTS_AFTER=$(gh api repos/${{ github.repository }}/actions/artifacts --jq '.total_count // 0' 2>/dev/null || echo "0")
+          
+          echo "## ✅ SESUDAH CLEANUP" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifacts | Cache | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ${ARTIFACTS_AFTER} | ${STORAGE_AFTER} MB | 🟢 Bersih Total |" >> $GITHUB_STEP_SUMMARY
