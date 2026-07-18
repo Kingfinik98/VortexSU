@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
 
       - name: Prepare and Rename Assets
         run: |
@@ -62,7 +62,7 @@ jobs:
         run: ls -R
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           # PERBAIKAN: Gunakan tag_name, bukan tag
           tag_name: ${{ github.event_name == 'workflow_dispatch' && format('ci-build-{0}', github.run_number) || github.ref_name }}
